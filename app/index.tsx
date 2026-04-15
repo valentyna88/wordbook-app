@@ -1,35 +1,39 @@
-import { StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
+import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/typography";
+import { WordCard } from "@/src/features/words/components/WordCard";
+import { mockWords } from "@/src/features/words/data/mockWords";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 
 export default function HomeScreen() {
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <Text style={styles.title}>WordBook</Text>
-        <Text style={styles.subtitle}>Home screen is ready</Text>
-      </View>
-    </SafeAreaView>
+    <ScreenContainer>
+      <FlatList
+        data={mockWords}
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.listContent}
+        ListHeaderComponent={
+          <View style={styles.header}>
+            <Text style={[typography.title, styles.title]}>My Words</Text>
+          </View>
+        }
+        renderItem={({ item }) => <WordCard item={item} />}
+      />
+    </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#F0F0F0",
+  listContent: {
+    paddingBottom: 24,
+    gap: 20,
   },
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 24,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "700",
-    color: "#474B62",
+  header: {
     marginBottom: 12,
   },
-  subtitle: {
-    fontSize: 16,
-    color: "#6B7280",
+  title: {
+    color: colors.text.primary,
+    textAlign: "center",
   },
 });
