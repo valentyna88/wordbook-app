@@ -15,6 +15,9 @@ export default function HomeScreen() {
       item.word.toLowerCase().includes(normalizedQuery) ||
       item.translation.toLowerCase().includes(normalizedQuery),
   );
+
+  const showSearchEmptyState =
+    searchQuery.trim() !== "" && filteredWords.length === 0;
   return (
     <ScreenContainer>
       <FlatList
@@ -29,6 +32,16 @@ export default function HomeScreen() {
           </View>
         }
         renderItem={({ item }) => <WordCard item={item} />}
+        ListEmptyComponent={
+          showSearchEmptyState ? (
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyTitle}>Nothing found</Text>
+              <Text style={styles.emptySubtitle}>
+                Try another word or translation
+              </Text>
+            </View>
+          ) : null
+        }
       />
     </ScreenContainer>
   );
@@ -44,6 +57,23 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.text.primary,
+    textAlign: "center",
+  },
+  emptyState: {
+    paddingTop: 32,
+    alignItems: "center",
+  },
+
+  emptyTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: colors.text.primary,
+    marginBottom: 8,
+  },
+
+  emptySubtitle: {
+    fontSize: 14,
+    color: colors.text.secondary,
     textAlign: "center",
   },
 });
