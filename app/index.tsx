@@ -6,10 +6,15 @@ import { SearchInput } from "@/src/components/ui/SearchInput";
 import { EmptyState } from "@/src/features/words/components/EmptyState";
 import { WordCard } from "@/src/features/words/components/WordCard";
 import { mockWords } from "@/src/features/words/data/mockWords";
+import { router } from "expo-router";
 import { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 export default function HomeScreen() {
+  const handleAddWordPress = () => {
+    router.push("/add-word");
+  };
+
   const [searchQuery, setSearchQuery] = useState("");
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const filteredWords = mockWords.filter(
@@ -31,7 +36,10 @@ export default function HomeScreen() {
           title="No words yet"
           subtitle="Add your first word to start building your vocabulary"
         />
-        <PrimaryButton title="+ Add your first word" onPress={() => {}} />
+        <PrimaryButton
+          title="+ Add your first word"
+          onPress={handleAddWordPress}
+        />
       </ScreenContainer>
     );
   }
@@ -59,7 +67,7 @@ export default function HomeScreen() {
           ) : null
         }
       />
-      <FloatingAddButton onPress={() => {}} />
+      <FloatingAddButton onPress={handleAddWordPress} />
     </ScreenContainer>
   );
 }
