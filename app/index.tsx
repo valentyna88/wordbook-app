@@ -1,3 +1,4 @@
+import { PrimaryButton } from "@/src/components/ui/PrimaryButton";
 import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
 import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
 import { SearchInput } from "@/src/components/ui/SearchInput";
@@ -29,6 +30,7 @@ export default function HomeScreen() {
           title="No words yet"
           subtitle="Add your first word to start building your vocabulary"
         />
+        <PrimaryButton title="+ Add your first word" onPress={() => {}} />
       </ScreenContainer>
     );
   }
