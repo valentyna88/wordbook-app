@@ -1,3 +1,4 @@
+import { FloatingAddButton } from "@/src/components/ui/FloatingAddButton";
 import { PrimaryButton } from "@/src/components/ui/PrimaryButton";
 import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
 import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
@@ -58,6 +59,7 @@ export default function HomeScreen() {
           ) : null
         }
       />
+      <FloatingAddButton onPress={() => {}} />
     </ScreenContainer>
   );
 }
