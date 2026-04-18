@@ -16,8 +16,25 @@ export default function HomeScreen() {
       item.translation.toLowerCase().includes(normalizedQuery),
   );
 
+  const hasWords = mockWords.length > 0;
   const showSearchEmptyState =
-    searchQuery.trim() !== "" && filteredWords.length === 0;
+    hasWords && searchQuery.trim() !== "" && filteredWords.length === 0;
+
+  if (!hasWords) {
+    return (
+      <ScreenContainer>
+        <Text style={[typography.title, styles.title]}>My Words</Text>
+
+        <View style={styles.emptyState}>
+          <Text style={styles.emptyTitle}>No words yet</Text>
+          <Text style={styles.emptySubtitle}>
+            Add your first word to start building your vocabulary
+          </Text>
+        </View>
+      </ScreenContainer>
+    );
+  }
+
   return (
     <ScreenContainer>
       <FlatList
