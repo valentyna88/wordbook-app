@@ -1,12 +1,11 @@
-import { useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import { colors } from "@/src/constants/colors";
-import { typography } from "@/src/constants/typography";
 import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
+import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
 import { SearchInput } from "@/src/components/ui/SearchInput";
+import { EmptyState } from "@/src/features/words/components/EmptyState";
 import { WordCard } from "@/src/features/words/components/WordCard";
 import { mockWords } from "@/src/features/words/data/mockWords";
-import { EmptyState } from "@/src/features/words/components/EmptyState";
+import { useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 
 export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -24,7 +23,7 @@ export default function HomeScreen() {
   if (!hasWords) {
     return (
       <ScreenContainer>
-        <Text style={[typography.title, styles.title]}>My Words</Text>
+        <ScreenTitle title="My Words" />
 
         <EmptyState
           title="No words yet"
@@ -43,7 +42,7 @@ export default function HomeScreen() {
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
           <View style={styles.header}>
-            <Text style={[typography.title, styles.title]}>My Words</Text>
+            <ScreenTitle title="My Words" />
             <SearchInput value={searchQuery} onChangeText={setSearchQuery} />
           </View>
         }
@@ -68,9 +67,5 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 12,
-  },
-  title: {
-    color: colors.text.primary,
-    textAlign: "center",
   },
 });
