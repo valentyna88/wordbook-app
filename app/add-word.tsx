@@ -3,9 +3,17 @@ import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
 import { colors } from "@/src/constants/colors";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function AddWordScreen() {
+  const [word, setWord] = useState("");
+  const [translation, setTranslation] = useState("");
+  const [example, setExample] = useState("");
+
+  const handleSave = () => {
+    console.log({ word, translation, example });
+  };
   return (
     <ScreenContainer>
       <View style={styles.header}>
@@ -25,21 +33,30 @@ export default function AddWordScreen() {
           style={styles.input}
           placeholder="Enter a word"
           placeholderTextColor={colors.text.secondary}
+          value={word}
+          onChangeText={setWord}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
         <Text style={styles.label}>Translation</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter translation"
           placeholderTextColor={colors.text.secondary}
+          value={translation}
+          onChangeText={setTranslation}
+          autoCapitalize="none"
         />
         <Text style={styles.label}>Example sentence (optional)</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter example sentence"
           placeholderTextColor={colors.text.secondary}
+          value={example}
+          onChangeText={setExample}
         />
 
-        <Pressable style={styles.saveButton}>
+        <Pressable style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.saveButtonText}>Save</Text>
         </Pressable>
       </View>
