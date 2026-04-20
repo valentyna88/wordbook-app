@@ -145,7 +145,13 @@ export default function AddWordScreen() {
           <Text style={styles.success}>{successMessage}</Text>
         ) : null}
 
-        <Pressable style={styles.saveButton} onPress={handleSave}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.saveButton,
+            pressed && styles.saveButtonPressed,
+          ]}
+          onPress={handleSave}
+        >
           <Text style={styles.saveButtonText}>Save</Text>
         </Pressable>
       </View>
@@ -191,6 +197,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingVertical: 12,
     alignItems: "center",
+  },
+  saveButtonPressed: {
+    opacity: 0.8,
   },
   saveButtonText: {
     color: "#FFFCFC",
