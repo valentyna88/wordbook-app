@@ -1,5 +1,10 @@
+import { WordsProvider } from "@/src/context/WordsContext";
 import { Stack } from "expo-router";
 
 export default function RootLayout() {
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <WordsProvider>
+      <Stack screenOptions={{ headerShown: false }} />
+    </WordsProvider>
+  );
 }

@@ -3,9 +3,9 @@ import { PrimaryButton } from "@/src/components/ui/PrimaryButton";
 import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
 import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
 import { SearchInput } from "@/src/components/ui/SearchInput";
+import { useWords } from "@/src/context/WordsContext";
 import { EmptyState } from "@/src/features/words/components/EmptyState";
 import { WordCard } from "@/src/features/words/components/WordCard";
-import { mockWords } from "@/src/features/words/data/mockWords";
 import { router } from "expo-router";
 import { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
@@ -17,13 +17,14 @@ export default function HomeScreen() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const normalizedQuery = searchQuery.trim().toLowerCase();
-  const filteredWords = mockWords.filter(
+  const { words } = useWords();
+  const filteredWords = words.filter(
     (item) =>
       item.word.toLowerCase().includes(normalizedQuery) ||
       item.translation.toLowerCase().includes(normalizedQuery),
   );
 
-  const hasWords = mockWords.length > 0;
+  const hasWords = words.length > 0;
   const showSearchEmptyState =
     hasWords && searchQuery.trim() !== "" && filteredWords.length === 0;
 

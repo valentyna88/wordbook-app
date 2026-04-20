@@ -1,12 +1,14 @@
 import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
 import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
 import { colors } from "@/src/constants/colors";
+import { useWords } from "@/src/context/WordsContext";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function AddWordScreen() {
+  const { addWord } = useWords();
   const [word, setWord] = useState("");
   const [translation, setTranslation] = useState("");
   const [example, setExample] = useState("");
@@ -16,8 +18,6 @@ export default function AddWordScreen() {
     translation: "",
   });
 
-  const [successMessage, setSuccessMessage] = useState("");
-
   const handleSave = () => {
     const trimmedWord = word.trim();
     const trimmedTranslation = translation.trim();
@@ -26,36 +26,23 @@ export default function AddWordScreen() {
       word: "",
       translation: "",
     };
-
     if (trimmedWord === "") {
       newErrors.word = "Word is required";
     }
-
     if (trimmedTranslation === "") {
       newErrors.translation = "Translation is required";
     }
-
     if (newErrors.word || newErrors.translation) {
       setErrors(newErrors);
-      setSuccessMessage("");
       return;
     }
 
-    console.log({
+    addWord({
       word: trimmedWord,
       translation: trimmedTranslation,
-      example: example.trim(),
+      example: example.trim() || undefined,
     });
-    setSuccessMessage("Word saved successfully");
-
-    setWord("");
-    setTranslation("");
-    setExample("");
-
-    setErrors({
-      word: "",
-      translation: "",
-    });
+    router.back();
   };
 
   const handleWordChange = (text: string) => {
@@ -66,9 +53,6 @@ export default function AddWordScreen() {
         ...prev,
         word: "",
       }));
-    }
-    if (successMessage) {
-      setSuccessMessage("");
     }
   };
 
@@ -81,16 +65,10 @@ export default function AddWordScreen() {
         translation: "",
       }));
     }
-    if (successMessage) {
-      setSuccessMessage("");
-    }
   };
 
   const handleExampleChange = (text: string) => {
     setExample(text);
-    if (successMessage) {
-      setSuccessMessage("");
-    }
   };
 
   return (
@@ -140,10 +118,6 @@ export default function AddWordScreen() {
           value={example}
           onChangeText={handleExampleChange}
         />
-
-        {successMessage ? (
-          <Text style={styles.success}>{successMessage}</Text>
-        ) : null}
 
         <Pressable
           style={({ pressed }) => [
@@ -210,12 +184,5 @@ const styles = StyleSheet.create({
     color: colors.danger,
     fontSize: 12,
     marginTop: 4,
-  },
-
-  success: {
-    color: "#69e974",
-    fontSize: 13,
-    marginTop: 12,
-    textAlign: "center",
   },
 });

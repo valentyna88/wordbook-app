@@ -5,4 +5,5 @@ export type Word = {
   word: string;
   translation: string;
   status: WordStatus;
+  example?: string;
 };
