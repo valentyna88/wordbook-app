@@ -11,9 +11,88 @@ export default function AddWordScreen() {
   const [translation, setTranslation] = useState("");
   const [example, setExample] = useState("");
 
+  const [errors, setErrors] = useState({
+    word: "",
+    translation: "",
+  });
+
+  const [successMessage, setSuccessMessage] = useState("");
+
   const handleSave = () => {
-    console.log({ word, translation, example });
+    const trimmedWord = word.trim();
+    const trimmedTranslation = translation.trim();
+
+    const newErrors = {
+      word: "",
+      translation: "",
+    };
+
+    if (trimmedWord === "") {
+      newErrors.word = "Word is required";
+    }
+
+    if (trimmedTranslation === "") {
+      newErrors.translation = "Translation is required";
+    }
+
+    if (newErrors.word || newErrors.translation) {
+      setErrors(newErrors);
+      setSuccessMessage("");
+      return;
+    }
+
+    console.log({
+      word: trimmedWord,
+      translation: trimmedTranslation,
+      example: example.trim(),
+    });
+    setSuccessMessage("Word saved successfully");
+
+    setWord("");
+    setTranslation("");
+    setExample("");
+
+    setErrors({
+      word: "",
+      translation: "",
+    });
   };
+
+  const handleWordChange = (text: string) => {
+    setWord(text);
+
+    if (errors.word) {
+      setErrors((prev) => ({
+        ...prev,
+        word: "",
+      }));
+    }
+    if (successMessage) {
+      setSuccessMessage("");
+    }
+  };
+
+  const handleTranslationChange = (text: string) => {
+    setTranslation(text);
+
+    if (errors.translation) {
+      setErrors((prev) => ({
+        ...prev,
+        translation: "",
+      }));
+    }
+    if (successMessage) {
+      setSuccessMessage("");
+    }
+  };
+
+  const handleExampleChange = (text: string) => {
+    setExample(text);
+    if (successMessage) {
+      setSuccessMessage("");
+    }
+  };
+
   return (
     <ScreenContainer>
       <View style={styles.header}>
@@ -34,27 +113,37 @@ export default function AddWordScreen() {
           placeholder="Enter a word"
           placeholderTextColor={colors.text.secondary}
           value={word}
-          onChangeText={setWord}
+          onChangeText={handleWordChange}
           autoCapitalize="none"
           autoCorrect={false}
         />
+        {errors.word ? <Text style={styles.error}>{errors.word}</Text> : null}
+
         <Text style={styles.label}>Translation</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter translation"
           placeholderTextColor={colors.text.secondary}
           value={translation}
-          onChangeText={setTranslation}
+          onChangeText={handleTranslationChange}
           autoCapitalize="none"
         />
+        {errors.translation ? (
+          <Text style={styles.error}>{errors.translation}</Text>
+        ) : null}
+
         <Text style={styles.label}>Example sentence (optional)</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter example sentence"
           placeholderTextColor={colors.text.secondary}
           value={example}
-          onChangeText={setExample}
+          onChangeText={handleExampleChange}
         />
+
+        {successMessage ? (
+          <Text style={styles.success}>{successMessage}</Text>
+        ) : null}
 
         <Pressable style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.saveButtonText}>Save</Text>
@@ -107,5 +196,17 @@ const styles = StyleSheet.create({
     color: "#FFFCFC",
     fontSize: 20,
     fontWeight: "600",
+  },
+  error: {
+    color: colors.danger,
+    fontSize: 12,
+    marginTop: 4,
+  },
+
+  success: {
+    color: "#69e974",
+    fontSize: 13,
+    marginTop: 12,
+    textAlign: "center",
   },
 });
