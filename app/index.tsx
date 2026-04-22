@@ -58,7 +58,17 @@ export default function HomeScreen() {
             <SearchInput value={searchQuery} onChangeText={setSearchQuery} />
           </View>
         }
-        renderItem={({ item }) => <WordCard item={item} />}
+        renderItem={({ item }) => (
+          <WordCard
+            item={item}
+            onPress={() =>
+              router.push({
+                pathname: "/word-details/[id]",
+                params: { id: item.id },
+              })
+            }
+          />
+        )}
         ListEmptyComponent={
           showSearchEmptyState ? (
             <EmptyState
