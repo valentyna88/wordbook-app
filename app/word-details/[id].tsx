@@ -54,7 +54,15 @@ export default function WordDetailsScreen() {
       </View>
 
       <View style={styles.actions}>
-        <Pressable style={styles.editButton} onPress={() => {}}>
+        <Pressable
+          style={styles.editButton}
+          onPress={() =>
+            router.push({
+              pathname: "/edit-word",
+              params: { id: wordItem.id },
+            })
+          }
+        >
           <Feather name="edit" size={20} color="#FFFFFF" />
           <Text style={styles.editButtonText}>Edit</Text>
         </Pressable>

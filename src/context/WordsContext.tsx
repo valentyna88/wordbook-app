@@ -12,6 +12,7 @@ type WordsContextType = {
   words: Word[];
   addWord: (newWord: NewWord) => void;
   deleteWord: (id: string) => void;
+  updateWord: (updatedWord: Word) => void;
 };
 
 const WordsContext = createContext<WordsContextType | undefined>(undefined);
@@ -35,8 +36,14 @@ export function WordsProvider({ children }: { children: ReactNode }) {
     setWords((prev) => prev.filter((word) => word.id !== id));
   };
 
+  const updateWord = (updatedWord: Word) => {
+    setWords((prev) =>
+      prev.map((word) => (word.id === updatedWord.id ? updatedWord : word)),
+    );
+  };
+
   return (
-    <WordsContext.Provider value={{ words, addWord, deleteWord }}>
+    <WordsContext.Provider value={{ words, addWord, deleteWord, updateWord }}>
       {children}
     </WordsContext.Provider>
   );
