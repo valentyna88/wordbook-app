@@ -3,18 +3,28 @@ import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
 import { StatusBadge } from "@/src/components/ui/StatusBadge";
 import { colors } from "@/src/constants/colors";
 import { useWords } from "@/src/context/WordsContext";
+import { DeleteWordModal } from "@/src/features/words/components/DeleteWordModal";
 import { Feather } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
+import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function WordDetailsScreen() {
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { words } = useWords();
+  const { words, deleteWord } = useWords();
   const wordItem = words.find((item) => item.id === id);
 
   if (!wordItem) {
     return <Text>Word not found</Text>;
   }
+
+  const handleConfirmDelete = () => {
+    deleteWord(wordItem.id);
+    setIsDeleteModalVisible(false);
+    router.back();
+  };
 
   return (
     <ScreenContainer>
@@ -49,11 +59,19 @@ export default function WordDetailsScreen() {
           <Text style={styles.editButtonText}>Edit</Text>
         </Pressable>
 
-        <Pressable style={styles.deleteButton} onPress={() => {}}>
+        <Pressable
+          style={styles.deleteButton}
+          onPress={() => setIsDeleteModalVisible(true)}
+        >
           <Feather name="trash-2" size={20} color="#FF5151" />
           <Text style={styles.deleteButtonText}>Delete</Text>
         </Pressable>
       </View>
+      <DeleteWordModal
+        visible={isDeleteModalVisible}
+        onCancel={() => setIsDeleteModalVisible(false)}
+        onConfirm={handleConfirmDelete}
+      />
     </ScreenContainer>
   );
 }

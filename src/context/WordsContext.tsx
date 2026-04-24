@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, ReactNode } from "react";
 import { mockWords } from "@/src/features/words/data/mockWords";
 import { Word } from "@/src/features/words/types/word.types";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 type NewWord = {
   word: string;
@@ -11,6 +11,7 @@ type NewWord = {
 type WordsContextType = {
   words: Word[];
   addWord: (newWord: NewWord) => void;
+  deleteWord: (id: string) => void;
 };
 
 const WordsContext = createContext<WordsContextType | undefined>(undefined);
@@ -30,8 +31,12 @@ export function WordsProvider({ children }: { children: ReactNode }) {
     setWords((prev) => [wordToAdd, ...prev]);
   };
 
+  const deleteWord = (id: string) => {
+    setWords((prev) => prev.filter((word) => word.id !== id));
+  };
+
   return (
-    <WordsContext.Provider value={{ words, addWord }}>
+    <WordsContext.Provider value={{ words, addWord, deleteWord }}>
       {children}
     </WordsContext.Provider>
   );
