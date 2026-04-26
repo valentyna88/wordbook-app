@@ -16,19 +16,67 @@ export default function EditWordScreen() {
   const [translation, setTranslation] = useState(wordItem?.translation ?? "");
   const [example, setExample] = useState(wordItem?.example ?? "");
 
+  const [errors, setErrors] = useState({
+    word: "",
+    translation: "",
+  });
+
   if (!wordItem) {
     return <Text>Word not found</Text>;
   }
 
   const handleSave = () => {
+    const trimmedWord = word.trim();
+    const trimmedTranslation = translation.trim();
+
+    const newErrors = {
+      word: "",
+      translation: "",
+    };
+
+    if (trimmedWord === "") {
+      newErrors.word = "Word is required";
+    }
+
+    if (trimmedTranslation === "") {
+      newErrors.translation = "Translation is required";
+    }
+
+    if (newErrors.word || newErrors.translation) {
+      setErrors(newErrors);
+      return;
+    }
+
     updateWord({
       ...wordItem,
-      word: word.trim(),
-      translation: translation.trim(),
+      word: trimmedWord,
+      translation: trimmedTranslation,
       example: example.trim() || undefined,
     });
 
     router.back();
+  };
+
+  const handleWordChange = (text: string) => {
+    setWord(text);
+
+    if (errors.word) {
+      setErrors((prev) => ({
+        ...prev,
+        word: "",
+      }));
+    }
+  };
+
+  const handleTranslationChange = (text: string) => {
+    setTranslation(text);
+
+    if (errors.translation) {
+      setErrors((prev) => ({
+        ...prev,
+        translation: "",
+      }));
+    }
   };
 
   return (
@@ -47,22 +95,26 @@ export default function EditWordScreen() {
         <TextInput
           style={styles.input}
           value={word}
-          onChangeText={setWord}
+          onChangeText={handleWordChange}
           placeholder="Enter a word"
           placeholderTextColor={colors.text.secondary}
           autoCapitalize="none"
           autoCorrect={false}
         />
+        {errors.word ? <Text style={styles.error}>{errors.word}</Text> : null}
 
         <Text style={styles.label}>Translation</Text>
         <TextInput
           style={styles.input}
           value={translation}
-          onChangeText={setTranslation}
+          onChangeText={handleTranslationChange}
           placeholder="Enter translation"
           placeholderTextColor={colors.text.secondary}
           autoCapitalize="none"
         />
+        {errors.translation ? (
+          <Text style={styles.error}>{errors.translation}</Text>
+        ) : null}
 
         <Text style={styles.label}>Example sentence (optional)</Text>
         <TextInput
@@ -137,5 +189,10 @@ const styles = StyleSheet.create({
   },
   saveButtonPressed: {
     opacity: 0.8,
+  },
+  error: {
+    color: colors.danger,
+    fontSize: 12,
+    marginTop: 4,
   },
 });
