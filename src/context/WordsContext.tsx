@@ -1,6 +1,12 @@
-import { mockWords } from "@/src/features/words/data/mockWords";
 import { Word } from "@/src/features/words/types/word.types";
-import { createContext, ReactNode, useContext, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 type NewWord = {
   word: string;
@@ -15,10 +21,40 @@ type WordsContextType = {
   updateWord: (updatedWord: Word) => void;
 };
 
+const STORAGE_KEY = "WORDS_STORAGE";
+
 const WordsContext = createContext<WordsContextType | undefined>(undefined);
 
 export function WordsProvider({ children }: { children: ReactNode }) {
-  const [words, setWords] = useState<Word[]>(mockWords);
+  const [words, setWords] = useState<Word[]>([]);
+
+  useEffect(() => {
+    const loadWords = async () => {
+      try {
+        const storedWords = await AsyncStorage.getItem(STORAGE_KEY);
+
+        if (storedWords) {
+          setWords(JSON.parse(storedWords));
+        }
+      } catch (error) {
+        console.log("Error loading words:", error);
+      }
+    };
+
+    loadWords();
+  }, []);
+
+  useEffect(() => {
+    const saveWords = async () => {
+      try {
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(words));
+      } catch (error) {
+        console.log("Error saving words:", error);
+      }
+    };
+
+    saveWords();
+  }, [words]);
 
   const addWord = (newWord: NewWord) => {
     const wordToAdd: Word = {
