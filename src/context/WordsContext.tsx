@@ -16,6 +16,7 @@ type NewWord = {
 
 type WordsContextType = {
   words: Word[];
+  isLoading: boolean;
   addWord: (newWord: NewWord) => void;
   deleteWord: (id: string) => void;
   updateWord: (updatedWord: Word) => void;
@@ -27,6 +28,7 @@ const WordsContext = createContext<WordsContextType | undefined>(undefined);
 
 export function WordsProvider({ children }: { children: ReactNode }) {
   const [words, setWords] = useState<Word[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadWords = async () => {
@@ -38,6 +40,8 @@ export function WordsProvider({ children }: { children: ReactNode }) {
         }
       } catch (error) {
         console.log("Error loading words:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -45,6 +49,10 @@ export function WordsProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
     const saveWords = async () => {
       try {
         await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(words));
@@ -54,7 +62,7 @@ export function WordsProvider({ children }: { children: ReactNode }) {
     };
 
     saveWords();
-  }, [words]);
+  }, [words, isLoading]);
 
   const addWord = (newWord: NewWord) => {
     const wordToAdd: Word = {
@@ -79,7 +87,9 @@ export function WordsProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <WordsContext.Provider value={{ words, addWord, deleteWord, updateWord }}>
+    <WordsContext.Provider
+      value={{ words, isLoading, addWord, deleteWord, updateWord }}
+    >
       {children}
     </WordsContext.Provider>
   );
