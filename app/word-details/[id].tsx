@@ -23,7 +23,11 @@ export default function WordDetailsScreen() {
   const handleConfirmDelete = () => {
     deleteWord(wordItem.id);
     setIsDeleteModalVisible(false);
-    router.back();
+
+    router.replace({
+      pathname: "/",
+      params: { toast: "Word deleted" },
+    });
   };
 
   return (

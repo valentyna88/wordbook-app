@@ -54,7 +54,10 @@ export default function EditWordScreen() {
       example: example.trim() || undefined,
     });
 
-    router.back();
+    router.replace({
+      pathname: "/",
+      params: { toast: "Word updated", type: "success" },
+    });
   };
 
   const handleWordChange = (text: string) => {

@@ -3,12 +3,13 @@ import { PrimaryButton } from "@/src/components/ui/PrimaryButton";
 import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
 import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
 import { SearchInput } from "@/src/components/ui/SearchInput";
+import { Toast } from "@/src/components/ui/Toast";
 import { colors } from "@/src/constants/colors";
 import { useWords } from "@/src/context/WordsContext";
 import { EmptyState } from "@/src/features/words/components/EmptyState";
 import { WordCard } from "@/src/features/words/components/WordCard";
-import { router } from "expo-router";
-import { useState } from "react";
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 
 export default function HomeScreen() {
@@ -17,6 +18,33 @@ export default function HomeScreen() {
   };
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error" | "info";
+  } | null>(null);
+
+  const { toast: toastParam, type } = useLocalSearchParams<{
+    toast?: string;
+    type?: "success" | "error" | "info";
+  }>();
+
+  const showToast = (
+    message: string,
+    type: "success" | "error" | "info" = "info",
+  ) => {
+    setToast({ message, type });
+
+    setTimeout(() => {
+      setToast(null);
+    }, 2000);
+  };
+
+  useEffect(() => {
+    if (toastParam) {
+      showToast(toastParam, type);
+    }
+  }, [toastParam, type]);
+
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const { words, isLoading } = useWords();
   const filteredWords = words.filter(
@@ -92,6 +120,7 @@ export default function HomeScreen() {
         }
       />
       <FloatingAddButton onPress={handleAddWordPress} />
+      {toast ? <Toast message={toast.message} type={toast.type} /> : null}
     </ScreenContainer>
   );
 }

@@ -42,7 +42,11 @@ export default function AddWordScreen() {
       translation: trimmedTranslation,
       example: example.trim() || undefined,
     });
-    router.back();
+
+    router.replace({
+      pathname: "/",
+      params: { toast: "Word added", type: "success" },
+    });
   };
 
   const handleWordChange = (text: string) => {
