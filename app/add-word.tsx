@@ -8,7 +8,7 @@ import { useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function AddWordScreen() {
-  const { addWord } = useWords();
+  const { words, addWord } = useWords();
   const [word, setWord] = useState("");
   const [translation, setTranslation] = useState("");
   const [example, setExample] = useState("");
@@ -22,12 +22,20 @@ export default function AddWordScreen() {
     const trimmedWord = word.trim();
     const trimmedTranslation = translation.trim();
 
+    const normalizedWord = trimmedWord.toLowerCase();
+
+    const isDuplicate = words.some(
+      (item) => item.word.trim().toLowerCase() === normalizedWord,
+    );
+
     const newErrors = {
       word: "",
       translation: "",
     };
     if (trimmedWord === "") {
       newErrors.word = "Word is required";
+    } else if (isDuplicate) {
+      newErrors.word = "This word already exists";
     }
     if (trimmedTranslation === "") {
       newErrors.translation = "Translation is required";
