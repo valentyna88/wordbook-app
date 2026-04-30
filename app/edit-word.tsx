@@ -29,6 +29,14 @@ export default function EditWordScreen() {
     const trimmedWord = word.trim();
     const trimmedTranslation = translation.trim();
 
+    const normalizedWord = trimmedWord.toLowerCase();
+
+    const isDuplicate = words.some(
+      (item) =>
+        item.id !== wordItem.id &&
+        item.word.trim().toLowerCase() === normalizedWord,
+    );
+
     const newErrors = {
       word: "",
       translation: "",
@@ -36,6 +44,8 @@ export default function EditWordScreen() {
 
     if (trimmedWord === "") {
       newErrors.word = "Word is required";
+    } else if (isDuplicate) {
+      newErrors.word = "This word already exists";
     }
 
     if (trimmedTranslation === "") {
