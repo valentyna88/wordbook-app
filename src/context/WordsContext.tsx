@@ -20,6 +20,7 @@ type WordsContextType = {
   addWord: (newWord: NewWord) => void;
   deleteWord: (id: string) => void;
   updateWord: (updatedWord: Word) => void;
+  toggleWordStatus: (id: string) => void;
 };
 
 const STORAGE_KEY = "WORDS_STORAGE";
@@ -86,9 +87,29 @@ export function WordsProvider({ children }: { children: ReactNode }) {
     );
   };
 
+  const toggleWordStatus = (id: string) => {
+    setWords((prev) =>
+      prev.map((word) =>
+        word.id === id
+          ? {
+              ...word,
+              status: word.status === "learning" ? "known" : "learning",
+            }
+          : word,
+      ),
+    );
+  };
+
   return (
     <WordsContext.Provider
-      value={{ words, isLoading, addWord, deleteWord, updateWord }}
+      value={{
+        words,
+        isLoading,
+        addWord,
+        deleteWord,
+        updateWord,
+        toggleWordStatus,
+      }}
     >
       {children}
     </WordsContext.Provider>

@@ -13,7 +13,7 @@ export default function WordDetailsScreen() {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { words, deleteWord } = useWords();
+  const { words, deleteWord, toggleWordStatus } = useWords();
   const wordItem = words.find((item) => item.id === id);
 
   if (!wordItem) {
@@ -28,6 +28,10 @@ export default function WordDetailsScreen() {
       pathname: "/",
       params: { toast: "Word deleted" },
     });
+  };
+
+  const handleToggleStatus = () => {
+    toggleWordStatus(wordItem.id);
   };
 
   return (
@@ -52,8 +56,10 @@ export default function WordDetailsScreen() {
         )}
 
         <View style={styles.progressRow}>
-          <Text style={styles.progressLabel}>Progress</Text>
-          <StatusBadge status={wordItem.status} />
+          <Text style={styles.progressLabel}>Tap status to change</Text>
+          <Pressable onPress={handleToggleStatus}>
+            <StatusBadge status={wordItem.status} />
+          </Pressable>
         </View>
       </View>
 
