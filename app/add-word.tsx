@@ -2,6 +2,7 @@ import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
 import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
 import { colors } from "@/src/constants/colors";
 import { useWords } from "@/src/context/WordsContext";
+import { hasDuplicateWord } from "@/src/features/words/utils/wordValidation";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
@@ -22,11 +23,10 @@ export default function AddWordScreen() {
     const trimmedWord = word.trim();
     const trimmedTranslation = translation.trim();
 
-    const normalizedWord = trimmedWord.toLowerCase();
-
-    const isDuplicate = words.some(
-      (item) => item.word.trim().toLowerCase() === normalizedWord,
-    );
+    const isDuplicate = hasDuplicateWord({
+      words,
+      word: trimmedWord,
+    });
 
     const newErrors = {
       word: "",
