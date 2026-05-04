@@ -10,7 +10,16 @@ import { EmptyState } from "@/src/features/words/components/EmptyState";
 import { WordCard } from "@/src/features/words/components/WordCard";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+
+const STATUS_FILTERS = ["all", "learning", "known"] as const;
 
 export default function HomeScreen() {
   const handleAddWordPress = () => {
@@ -18,6 +27,9 @@ export default function HomeScreen() {
   };
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "learning" | "known"
+  >("all");
   const [toast, setToast] = useState<{
     message: string;
     type: "success" | "error" | "info";
@@ -47,15 +59,23 @@ export default function HomeScreen() {
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const { words, isLoading } = useWords();
-  const filteredWords = words.filter(
-    (item) =>
+  const filteredWords = words.filter((item) => {
+    const matchesSearch =
       item.word.toLowerCase().includes(normalizedQuery) ||
-      item.translation.toLowerCase().includes(normalizedQuery),
-  );
+      item.translation.toLowerCase().includes(normalizedQuery);
+
+    const matchesStatus =
+      statusFilter === "all" || item.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
 
   const hasWords = words.length > 0;
   const showSearchEmptyState =
     hasWords && searchQuery.trim() !== "" && filteredWords.length === 0;
+
+  const showStatusEmptyState =
+    hasWords && statusFilter !== "all" && filteredWords.length === 0;
 
   if (isLoading) {
     return (
@@ -97,6 +117,35 @@ export default function HomeScreen() {
           <View style={styles.header}>
             <ScreenTitle title="My Words" />
             <SearchInput value={searchQuery} onChangeText={setSearchQuery} />
+            <View style={styles.filters}>
+              {STATUS_FILTERS.map((status) => {
+                const isActive = statusFilter === status;
+
+                return (
+                  <Pressable
+                    key={status}
+                    onPress={() => setStatusFilter(status)}
+                    style={[
+                      styles.filterButton,
+                      isActive && styles.filterButtonActive,
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.filterText,
+                        isActive && styles.filterTextActive,
+                      ]}
+                    >
+                      {status === "all"
+                        ? "All"
+                        : status === "learning"
+                          ? "Learning"
+                          : "Known"}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
           </View>
         }
         renderItem={({ item }) => (
@@ -115,6 +164,19 @@ export default function HomeScreen() {
             <EmptyState
               title="Nothing found"
               subtitle="Try another word or translation"
+            />
+          ) : showStatusEmptyState ? (
+            <EmptyState
+              title={
+                statusFilter === "learning"
+                  ? "No learning words"
+                  : "No known words"
+              }
+              subtitle={
+                statusFilter === "learning"
+                  ? "Add new words or keep practicing"
+                  : "Mark words as known to see them here"
+              }
             />
           ) : null
         }
@@ -137,5 +199,32 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  filters: {
+    flexDirection: "row",
+    gap: 8,
+    marginTop: 12,
+  },
+
+  filterButton: {
+    flex: 1,
+    paddingVertical: 8,
+    borderRadius: 8,
+    backgroundColor: colors.border,
+    alignItems: "center",
+  },
+
+  filterButtonActive: {
+    backgroundColor: colors.primary,
+  },
+
+  filterText: {
+    color: colors.text.primary,
+    fontSize: 14,
+    fontWeight: "500",
+  },
+
+  filterTextActive: {
+    color: colors.card,
   },
 });
