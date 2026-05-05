@@ -1,6 +1,8 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
 import { StatusBadge } from "@/src/components/ui/StatusBadge";
 import { colors } from "@/src/constants/colors";
+import { Feather } from "@expo/vector-icons";
+import * as Speech from "expo-speech";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Word } from "../types/word.types";
 
 type Props = {
@@ -9,6 +11,12 @@ type Props = {
 };
 
 export function WordCard({ item, onPress }: Props) {
+  const handleSpeak = () => {
+    Speech.speak(item.word, {
+      language: "en",
+    });
+  };
+
   return (
     <Pressable
       style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
@@ -16,7 +24,20 @@ export function WordCard({ item, onPress }: Props) {
     >
       <View style={styles.topRow}>
         <Text style={styles.word}>{item.word}</Text>
-        <StatusBadge status={item.status} />
+
+        <View style={styles.rightActions}>
+          <Pressable
+            onPress={handleSpeak}
+            style={({ pressed }) => [
+              styles.speakButton,
+              pressed && styles.speakButtonPressed,
+            ]}
+          >
+            <Feather name="volume-2" size={20} color={colors.primary} />
+          </Pressable>
+
+          <StatusBadge status={item.status} />
+        </View>
       </View>
 
       <Text style={styles.translation}>{item.translation}</Text>
@@ -26,7 +47,7 @@ export function WordCard({ item, onPress }: Props) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.background,
+    backgroundColor: colors.card,
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 16,
@@ -50,6 +71,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "600",
     color: colors.text.primary,
+  },
+  rightActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+
+  speakButton: {
+    padding: 6,
+    borderRadius: 18,
+  },
+
+  speakButtonPressed: {
+    opacity: 0.6,
   },
   translation: {
     fontSize: 18,
