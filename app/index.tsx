@@ -7,19 +7,14 @@ import { Toast } from "@/src/components/ui/Toast";
 import { colors } from "@/src/constants/colors";
 import { useWords } from "@/src/context/WordsContext";
 import { EmptyState } from "@/src/features/words/components/EmptyState";
+import {
+  StatusFilter,
+  StatusFilterValue,
+} from "@/src/features/words/components/StatusFilter";
 import { WordCard } from "@/src/features/words/components/WordCard";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-
-const STATUS_FILTERS = ["all", "learning", "known"] as const;
+import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 
 export default function HomeScreen() {
   const handleAddWordPress = () => {
@@ -27,9 +22,7 @@ export default function HomeScreen() {
   };
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<
-    "all" | "learning" | "known"
-  >("all");
+  const [statusFilter, setStatusFilter] = useState<StatusFilterValue>("all");
   const [toast, setToast] = useState<{
     message: string;
     type: "success" | "error" | "info";
@@ -117,35 +110,7 @@ export default function HomeScreen() {
           <View style={styles.header}>
             <ScreenTitle title="My Words" />
             <SearchInput value={searchQuery} onChangeText={setSearchQuery} />
-            <View style={styles.filters}>
-              {STATUS_FILTERS.map((status) => {
-                const isActive = statusFilter === status;
-
-                return (
-                  <Pressable
-                    key={status}
-                    onPress={() => setStatusFilter(status)}
-                    style={[
-                      styles.filterButton,
-                      isActive && styles.filterButtonActive,
-                    ]}
-                  >
-                    <Text
-                      style={[
-                        styles.filterText,
-                        isActive && styles.filterTextActive,
-                      ]}
-                    >
-                      {status === "all"
-                        ? "All"
-                        : status === "learning"
-                          ? "Learning"
-                          : "Known"}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </View>
+            <StatusFilter value={statusFilter} onChange={setStatusFilter} />
           </View>
         }
         renderItem={({ item }) => (
@@ -199,32 +164,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  filters: {
-    flexDirection: "row",
-    gap: 8,
-    marginTop: 12,
-  },
-
-  filterButton: {
-    flex: 1,
-    paddingVertical: 8,
-    borderRadius: 8,
-    backgroundColor: colors.border,
-    alignItems: "center",
-  },
-
-  filterButtonActive: {
-    backgroundColor: colors.primary,
-  },
-
-  filterText: {
-    color: colors.text.primary,
-    fontSize: 14,
-    fontWeight: "500",
-  },
-
-  filterTextActive: {
-    color: colors.card,
   },
 });
