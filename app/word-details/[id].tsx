@@ -6,6 +6,7 @@ import { useWords } from "@/src/context/WordsContext";
 import { DeleteWordModal } from "@/src/features/words/components/DeleteWordModal";
 import { Feather } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
+import * as Speech from "expo-speech";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -34,6 +35,12 @@ export default function WordDetailsScreen() {
     toggleWordStatus(wordItem.id);
   };
 
+  const handleSpeakWord = () => {
+    Speech.speak(wordItem.word, {
+      language: "en",
+    });
+  };
+
   return (
     <ScreenContainer>
       <View style={styles.header}>
@@ -45,7 +52,19 @@ export default function WordDetailsScreen() {
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.word}>{wordItem.word}</Text>
+        <View style={styles.wordRow}>
+          <Text style={styles.word}>{wordItem.word}</Text>
+
+          <Pressable
+            onPress={handleSpeakWord}
+            style={({ pressed }) => [
+              styles.speakButton,
+              pressed && { opacity: 0.6 },
+            ]}
+          >
+            <Feather name="volume-2" size={24} color={colors.primary} />
+          </Pressable>
+        </View>
         <Text style={styles.translation}>{wordItem.translation}</Text>
 
         {wordItem.example && (
@@ -116,7 +135,21 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#111111",
     textAlign: "center",
+  },
+
+  wordRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 16,
     marginBottom: 12,
+  },
+
+  speakButton: {
+    padding: 6,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   translation: {
