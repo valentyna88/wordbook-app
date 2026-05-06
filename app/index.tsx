@@ -14,7 +14,14 @@ import {
 import { WordCard } from "@/src/features/words/components/WordCard";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 export default function HomeScreen() {
   const handleAddWordPress = () => {
@@ -110,6 +117,11 @@ export default function HomeScreen() {
           <View style={styles.header}>
             <ScreenTitle title="My Words" />
             <SearchInput value={searchQuery} onChangeText={setSearchQuery} />
+
+            <Pressable onPress={() => router.push("/practice")}>
+              <Text>Start practice</Text>
+            </Pressable>
+
             <StatusFilter value={statusFilter} onChange={setStatusFilter} />
           </View>
         }
