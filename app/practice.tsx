@@ -4,6 +4,7 @@ import { colors } from "@/src/constants/colors";
 import { useWords } from "@/src/context/WordsContext";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
+import * as Speech from "expo-speech";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -33,6 +34,14 @@ export default function PracticeScreen() {
       const isFirstWord = prevIndex === 0;
 
       return isFirstWord ? learningWords.length - 1 : prevIndex - 1;
+    });
+  };
+
+  const handleSpeak = () => {
+    Speech.speak(currentWord.word, {
+      language: "en",
+      pitch: 1,
+      rate: 0.9,
     });
   };
 
@@ -76,19 +85,19 @@ export default function PracticeScreen() {
           style={styles.card}
           onPress={() => setIsTranslationVisible((prev) => !prev)}
         >
-          {isTranslationVisible ? (
-            <>
-              <Text style={styles.title}>{currentWord.translation}</Text>
+          <View style={styles.wordRow}>
+            <Text style={styles.title}>
+              {isTranslationVisible
+                ? currentWord.translation
+                : currentWord.word}
+            </Text>
 
-              <Text style={styles.subtitle}>Tap to hide translation</Text>
-            </>
-          ) : (
-            <>
-              <Text style={styles.title}>{currentWord.word}</Text>
-
-              <Text style={styles.subtitle}>Tap to show translation</Text>
-            </>
-          )}
+            {!isTranslationVisible ? (
+              <Pressable onPress={handleSpeak}>
+                <Feather name="volume-2" size={32} color={colors.primary} />
+              </Pressable>
+            ) : null}
+          </View>
         </Pressable>
 
         <View style={styles.navigation}>
@@ -152,6 +161,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 10,
     elevation: 4,
+  },
+
+  wordRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    marginBottom: 16,
   },
 
   title: {
