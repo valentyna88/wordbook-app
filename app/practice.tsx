@@ -12,10 +12,10 @@ export default function PracticeScreen() {
   const [isTranslationVisible, setIsTranslationVisible] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const { words } = useWords();
-
+  const { words, toggleWordStatus } = useWords();
   const learningWords = words.filter((word) => word.status === "learning");
   const currentWord = learningWords[currentIndex];
+  const hasMultipleWords = learningWords.length > 1;
 
   const handleNextWord = () => {
     setIsTranslationVisible(false);
@@ -38,11 +38,38 @@ export default function PracticeScreen() {
   };
 
   const handleSpeak = () => {
+    if (!currentWord) {
+      return;
+    }
+
     Speech.speak(currentWord.word, {
       language: "en",
       pitch: 1,
       rate: 0.9,
     });
+  };
+
+  const handleKnowWord = () => {
+    if (!currentWord) {
+      return;
+    }
+
+    const nextLearningWordsCount = learningWords.length - 1;
+
+    toggleWordStatus(currentWord.id);
+    setIsTranslationVisible(false);
+
+    setCurrentIndex((prevIndex) => {
+      if (nextLearningWordsCount === 0) {
+        return 0;
+      }
+
+      return prevIndex >= nextLearningWordsCount ? 0 : prevIndex;
+    });
+  };
+
+  const handleStillLearning = () => {
+    handleNextWord();
   };
 
   if (!currentWord) {
@@ -104,9 +131,11 @@ export default function PracticeScreen() {
           <Pressable
             style={({ pressed }) => [
               styles.navButton,
-              pressed && styles.navButtonPressed,
+              !hasMultipleWords && styles.navButtonDisabled,
+              pressed && hasMultipleWords && styles.navButtonPressed,
             ]}
             onPress={handlePreviousWord}
+            disabled={!hasMultipleWords}
           >
             <Feather
               name="chevron-left"
@@ -122,15 +151,38 @@ export default function PracticeScreen() {
           <Pressable
             style={({ pressed }) => [
               styles.navButton,
-              pressed && styles.navButtonPressed,
+              !hasMultipleWords && styles.navButtonDisabled,
+              pressed && hasMultipleWords && styles.navButtonPressed,
             ]}
             onPress={handleNextWord}
+            disabled={!hasMultipleWords}
           >
             <Feather
               name="chevron-right"
               size={28}
               color={colors.text.primary}
             />
+          </Pressable>
+        </View>
+        <View style={styles.actions}>
+          <Pressable
+            style={({ pressed }) => [
+              styles.secondaryButton,
+              pressed && styles.buttonPressed,
+            ]}
+            onPress={handleStillLearning}
+          >
+            <Text style={styles.secondaryButtonText}>Still learning</Text>
+          </Pressable>
+
+          <Pressable
+            style={({ pressed }) => [
+              styles.primaryButton,
+              pressed && styles.buttonPressed,
+            ]}
+            onPress={handleKnowWord}
+          >
+            <Text style={styles.primaryButtonText}>I know this</Text>
           </Pressable>
         </View>
       </View>
@@ -211,5 +263,51 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: colors.text.secondary,
+  },
+
+  actions: {
+    flexDirection: "row",
+    gap: 12,
+    marginTop: 24,
+  },
+
+  secondaryButton: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: colors.status.learning,
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: "center",
+    backgroundColor: "#FFFBDB",
+  },
+
+  primaryButton: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: colors.status.known,
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: "center",
+    backgroundColor: "#EFFFF0",
+  },
+
+  buttonPressed: {
+    opacity: 0.8,
+  },
+
+  secondaryButtonText: {
+    color: colors.status.learning,
+    fontSize: 15,
+    fontWeight: "600",
+  },
+
+  primaryButtonText: {
+    color: colors.status.known,
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  navButtonDisabled: {
+    opacity: 0.5,
+    elevation: 0,
   },
 });
