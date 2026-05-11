@@ -28,12 +28,6 @@ export default function PracticeScreen() {
     (status) => status === "known",
   ).length;
 
-  const stillLearningCount = Object.values(answers).filter(
-    (status) => status === "learning",
-  ).length;
-
-  const hasLearningWords = learningWords.length > 0;
-
   const handleNextWord = () => {
     setIsTranslationVisible(false);
 
@@ -104,13 +98,6 @@ export default function PracticeScreen() {
     handleNextWord();
   };
 
-  const handleStartNewPractice = () => {
-    setAnswers({});
-    setCurrentIndex(0);
-    setIsTranslationVisible(false);
-    setIsPracticeCompleted(false);
-  };
-
   if (!currentWord) {
     return (
       <ScreenContainer>
@@ -127,7 +114,7 @@ export default function PracticeScreen() {
 
           <Text style={styles.subtitle}>
             {isPracticeCompleted
-              ? `Reviewed: ${reviewedCount} Known: ${knownCount} Still learning: ${stillLearningCount}`
+              ? `Reviewed: ${reviewedCount} Known: ${knownCount}`
               : "Add new words or mark some words as learning"}
           </Text>
         </View>
@@ -137,13 +124,9 @@ export default function PracticeScreen() {
             styles.resultButton,
             pressed && styles.buttonPressed,
           ]}
-          onPress={
-            hasLearningWords ? handleStartNewPractice : () => router.push("/")
-          }
+          onPress={() => router.push("/")}
         >
-          <Text style={styles.resultButtonText}>
-            {hasLearningWords ? "Start new practice" : "Back to words"}
-          </Text>
+          <Text style={styles.resultButtonText}>Back to words</Text>
         </Pressable>
       </ScreenContainer>
     );
