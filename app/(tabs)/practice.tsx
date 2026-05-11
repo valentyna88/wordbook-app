@@ -6,6 +6,7 @@ import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import * as Speech from "expo-speech";
 import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function PracticeScreen() {
@@ -21,6 +22,15 @@ export default function PracticeScreen() {
   const learningWords = words.filter((word) => word.status === "learning");
   const currentWord = learningWords[currentIndex];
   const hasMultipleWords = learningWords.length > 1;
+
+  useEffect(() => {
+    if (isPracticeCompleted && learningWords.length > 0) {
+      setAnswers({});
+      setCurrentIndex(0);
+      setIsTranslationVisible(false);
+      setIsPracticeCompleted(false);
+    }
+  }, [isPracticeCompleted, learningWords.length]);
 
   const reviewedCount = Object.keys(answers).length;
 
