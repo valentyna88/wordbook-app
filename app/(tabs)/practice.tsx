@@ -3,7 +3,6 @@ import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
 import { colors } from "@/src/constants/colors";
 import { useWords } from "@/src/context/WordsContext";
 import { Feather } from "@expo/vector-icons";
-import { router } from "expo-router";
 import * as Speech from "expo-speech";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
@@ -76,14 +75,6 @@ export default function PracticeScreen() {
     return (
       <ScreenContainer>
         <View style={styles.header}>
-          <Pressable onPress={() => router.back()}>
-            <Feather
-              name="chevron-left"
-              size={32}
-              color={colors.text.primary}
-            />
-          </Pressable>
-
           <ScreenTitle title="Practice" />
         </View>
 
@@ -100,10 +91,6 @@ export default function PracticeScreen() {
   return (
     <ScreenContainer>
       <View style={styles.header}>
-        <Pressable onPress={() => router.back()}>
-          <Feather name="chevron-left" size={32} color={colors.text.primary} />
-        </Pressable>
-
         <ScreenTitle title="Practice" />
       </View>
 
@@ -192,9 +179,6 @@ export default function PracticeScreen() {
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
     marginBottom: 18,
   },
   content: {
