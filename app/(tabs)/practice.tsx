@@ -3,6 +3,7 @@ import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
 import { colors } from "@/src/constants/colors";
 import { useWords } from "@/src/context/WordsContext";
 import { Feather } from "@expo/vector-icons";
+import { router } from "expo-router";
 import * as Speech from "expo-speech";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
@@ -11,10 +12,27 @@ export default function PracticeScreen() {
   const [isTranslationVisible, setIsTranslationVisible] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const [answers, setAnswers] = useState<Record<string, "known" | "learning">>(
+    {},
+  );
+  const [isPracticeCompleted, setIsPracticeCompleted] = useState(false);
+
   const { words, toggleWordStatus } = useWords();
   const learningWords = words.filter((word) => word.status === "learning");
   const currentWord = learningWords[currentIndex];
   const hasMultipleWords = learningWords.length > 1;
+
+  const reviewedCount = Object.keys(answers).length;
+
+  const knownCount = Object.values(answers).filter(
+    (status) => status === "known",
+  ).length;
+
+  const stillLearningCount = Object.values(answers).filter(
+    (status) => status === "learning",
+  ).length;
+
+  const hasLearningWords = learningWords.length > 0;
 
   const handleNextWord = () => {
     setIsTranslationVisible(false);
@@ -55,11 +73,17 @@ export default function PracticeScreen() {
 
     const nextLearningWordsCount = learningWords.length - 1;
 
+    setAnswers((prev) => ({
+      ...prev,
+      [currentWord.id]: "known",
+    }));
+
     toggleWordStatus(currentWord.id);
     setIsTranslationVisible(false);
 
     setCurrentIndex((prevIndex) => {
       if (nextLearningWordsCount === 0) {
+        setIsPracticeCompleted(true);
         return 0;
       }
 
@@ -68,7 +92,23 @@ export default function PracticeScreen() {
   };
 
   const handleStillLearning = () => {
+    if (!currentWord) {
+      return;
+    }
+
+    setAnswers((prev) => ({
+      ...prev,
+      [currentWord.id]: "learning",
+    }));
+
     handleNextWord();
+  };
+
+  const handleStartNewPractice = () => {
+    setAnswers({});
+    setCurrentIndex(0);
+    setIsTranslationVisible(false);
+    setIsPracticeCompleted(false);
   };
 
   if (!currentWord) {
@@ -79,11 +119,32 @@ export default function PracticeScreen() {
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.title}>No words to practice</Text>
+          <Text style={styles.title}>
+            {isPracticeCompleted
+              ? "Practice completed"
+              : "No words to practice"}
+          </Text>
+
           <Text style={styles.subtitle}>
-            Add new words or mark some words as learning
+            {isPracticeCompleted
+              ? `Reviewed: ${reviewedCount} Known: ${knownCount} Still learning: ${stillLearningCount}`
+              : "Add new words or mark some words as learning"}
           </Text>
         </View>
+
+        <Pressable
+          style={({ pressed }) => [
+            styles.resultButton,
+            pressed && styles.buttonPressed,
+          ]}
+          onPress={
+            hasLearningWords ? handleStartNewPractice : () => router.push("/")
+          }
+        >
+          <Text style={styles.resultButtonText}>
+            {hasLearningWords ? "Start new practice" : "Back to words"}
+          </Text>
+        </Pressable>
       </ScreenContainer>
     );
   }
@@ -293,5 +354,19 @@ const styles = StyleSheet.create({
   navButtonDisabled: {
     opacity: 0.5,
     elevation: 0,
+  },
+  resultButton: {
+    marginTop: 24,
+    alignSelf: "center",
+    backgroundColor: colors.primary,
+    borderRadius: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+  },
+
+  resultButtonText: {
+    color: colors.card,
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
