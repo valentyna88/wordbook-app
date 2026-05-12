@@ -1,13 +1,14 @@
 import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
 import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
-import { colors } from "@/src/constants/colors";
 import { useWords } from "@/src/context/WordsContext";
-import { Feather } from "@expo/vector-icons";
+import { PracticeActions } from "@/src/features/practice/components/PracticeActions";
+import { PracticeCard } from "@/src/features/practice/components/PracticeCard";
+import { PracticeNavigation } from "@/src/features/practice/components/PracticeNavigation";
+import { PracticeResult } from "@/src/features/practice/components/PracticeResult";
 import { router } from "expo-router";
 import * as Speech from "expo-speech";
-import { useState } from "react";
 import { useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 export default function PracticeScreen() {
   const [isTranslationVisible, setIsTranslationVisible] = useState(false);
@@ -115,29 +116,12 @@ export default function PracticeScreen() {
           <ScreenTitle title="Practice" />
         </View>
 
-        <View style={styles.card}>
-          <Text style={styles.title}>
-            {isPracticeCompleted
-              ? "Practice completed"
-              : "No words to practice"}
-          </Text>
-
-          <Text style={styles.subtitle}>
-            {isPracticeCompleted
-              ? `Reviewed: ${reviewedCount} Known: ${knownCount}`
-              : "Add new words or mark some words as learning"}
-          </Text>
-        </View>
-
-        <Pressable
-          style={({ pressed }) => [
-            styles.resultButton,
-            pressed && styles.buttonPressed,
-          ]}
-          onPress={() => router.push("/")}
-        >
-          <Text style={styles.resultButtonText}>Back to words</Text>
-        </Pressable>
+        <PracticeResult
+          isCompleted={isPracticeCompleted}
+          reviewedCount={reviewedCount}
+          knownCount={knownCount}
+          onBackToWords={() => router.push("/")}
+        />
       </ScreenContainer>
     );
   }
@@ -149,83 +133,23 @@ export default function PracticeScreen() {
       </View>
 
       <View style={styles.content}>
-        <Pressable
-          style={styles.card}
-          onPress={() => setIsTranslationVisible((prev) => !prev)}
-        >
-          <View style={styles.wordRow}>
-            <Text style={styles.title}>
-              {isTranslationVisible
-                ? currentWord.translation
-                : currentWord.word}
-            </Text>
-
-            {!isTranslationVisible ? (
-              <Pressable onPress={handleSpeak}>
-                <Feather name="volume-2" size={32} color={colors.primary} />
-              </Pressable>
-            ) : null}
-          </View>
-        </Pressable>
-
-        <View style={styles.navigation}>
-          <Pressable
-            style={({ pressed }) => [
-              styles.navButton,
-              !hasMultipleWords && styles.navButtonDisabled,
-              pressed && hasMultipleWords && styles.navButtonPressed,
-            ]}
-            onPress={handlePreviousWord}
-            disabled={!hasMultipleWords}
-          >
-            <Feather
-              name="chevron-left"
-              size={28}
-              color={colors.text.primary}
-            />
-          </Pressable>
-
-          <Text style={styles.counter}>
-            {currentIndex + 1} / {learningWords.length}
-          </Text>
-
-          <Pressable
-            style={({ pressed }) => [
-              styles.navButton,
-              !hasMultipleWords && styles.navButtonDisabled,
-              pressed && hasMultipleWords && styles.navButtonPressed,
-            ]}
-            onPress={handleNextWord}
-            disabled={!hasMultipleWords}
-          >
-            <Feather
-              name="chevron-right"
-              size={28}
-              color={colors.text.primary}
-            />
-          </Pressable>
-        </View>
-        <View style={styles.actions}>
-          <Pressable
-            style={({ pressed }) => [
-              styles.secondaryButton,
-              pressed && styles.buttonPressed,
-            ]}
-            onPress={handleStillLearning}
-          >
-            <Text style={styles.secondaryButtonText}>Still learning</Text>
-          </Pressable>
-
-          <Pressable
-            style={({ pressed }) => [
-              styles.primaryButton,
-              pressed && styles.buttonPressed,
-            ]}
-            onPress={handleKnowWord}
-          >
-            <Text style={styles.primaryButtonText}>I know this</Text>
-          </Pressable>
-        </View>
+        <PracticeCard
+          word={currentWord}
+          isTranslationVisible={isTranslationVisible}
+          onToggleTranslation={() => setIsTranslationVisible((prev) => !prev)}
+          onSpeak={handleSpeak}
+        />
+        <PracticeNavigation
+          currentIndex={currentIndex}
+          totalCount={learningWords.length}
+          hasMultipleWords={hasMultipleWords}
+          onPrevious={handlePreviousWord}
+          onNext={handleNextWord}
+        />
+        <PracticeActions
+          onStillLearning={handleStillLearning}
+          onKnowWord={handleKnowWord}
+        />
       </View>
     </ScreenContainer>
   );
@@ -238,128 +162,5 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     justifyContent: "center",
-  },
-  card: {
-    backgroundColor: colors.card,
-    borderRadius: 24,
-    paddingVertical: 48,
-    paddingHorizontal: 24,
-    height: 400,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: colors.text.primary,
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    elevation: 4,
-  },
-
-  wordRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    marginBottom: 16,
-  },
-
-  title: {
-    fontSize: 36,
-    lineHeight: 50,
-    fontWeight: "500",
-    color: colors.text.primary,
-    marginBottom: 16,
-    textAlign: "center",
-  },
-
-  subtitle: {
-    fontSize: 14,
-    color: colors.text.secondary,
-    textAlign: "center",
-  },
-
-  navigation: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 24,
-    marginTop: 24,
-  },
-
-  navButton: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: colors.card,
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 3,
-  },
-
-  navButtonPressed: {
-    opacity: 0.7,
-  },
-
-  counter: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: colors.text.secondary,
-  },
-
-  actions: {
-    flexDirection: "row",
-    gap: 12,
-    marginTop: 24,
-  },
-
-  secondaryButton: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: colors.status.learning,
-    borderRadius: 12,
-    paddingVertical: 14,
-    alignItems: "center",
-    backgroundColor: "#FFFBDB",
-  },
-
-  primaryButton: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: colors.status.known,
-    borderRadius: 12,
-    paddingVertical: 14,
-    alignItems: "center",
-    backgroundColor: "#EFFFF0",
-  },
-
-  buttonPressed: {
-    opacity: 0.8,
-  },
-
-  secondaryButtonText: {
-    color: colors.status.learning,
-    fontSize: 15,
-    fontWeight: "600",
-  },
-
-  primaryButtonText: {
-    color: colors.status.known,
-    fontSize: 15,
-    fontWeight: "600",
-  },
-  navButtonDisabled: {
-    opacity: 0.5,
-    elevation: 0,
-  },
-  resultButton: {
-    marginTop: 24,
-    alignSelf: "center",
-    backgroundColor: colors.primary,
-    borderRadius: 12,
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-  },
-
-  resultButtonText: {
-    color: colors.card,
-    fontSize: 16,
-    fontWeight: "600",
   },
 });
