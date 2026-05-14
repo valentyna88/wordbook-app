@@ -102,6 +102,10 @@ export default function SettingsScreen() {
         />
       </View>
 
+      <View style={styles.footer}>
+        <Text style={styles.version}>Version 1.0.0</Text>
+      </View>
+
       <InfoModal
         visible={modalContent !== null}
         title={modalContent?.title ?? ""}
@@ -198,5 +202,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     color: colors.text.primary,
+  },
+
+  footer: {
+    marginTop: 32,
+    alignItems: "center",
+    paddingBottom: 12,
+  },
+
+  version: {
+    fontSize: 13,
+    color: colors.text.secondary,
   },
 });
