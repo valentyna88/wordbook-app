@@ -5,7 +5,7 @@ import { colors } from "@/src/constants/colors";
 import { useWords } from "@/src/context/WordsContext";
 import { Feather } from "@expo/vector-icons";
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 type ModalContent = {
   title: string;
@@ -23,95 +23,100 @@ export default function SettingsScreen() {
 
   return (
     <ScreenContainer>
-      <ScreenTitle title="Settings" />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.content}
+      >
+        <ScreenTitle title="Settings" />
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Overview</Text>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Overview</Text>
 
-        <View style={styles.statsGrid}>
-          <View style={styles.statCard}>
-            <Text style={styles.statValue}>{totalWords}</Text>
-            <Text style={styles.statLabel}>Total</Text>
-          </View>
+          <View style={styles.statsGrid}>
+            <View style={styles.statCard}>
+              <Text style={styles.statValue}>{totalWords}</Text>
+              <Text style={styles.statLabel}>Total</Text>
+            </View>
 
-          <View style={styles.statCard}>
-            <Text style={styles.statValue}>{learningWords.length}</Text>
-            <Text style={styles.statLabel}>Learning</Text>
-          </View>
+            <View style={styles.statCard}>
+              <Text style={styles.statValue}>{learningWords.length}</Text>
+              <Text style={styles.statLabel}>Learning</Text>
+            </View>
 
-          <View style={styles.statCard}>
-            <Text style={styles.statValue}>{knownWords.length}</Text>
-            <Text style={styles.statLabel}>Known</Text>
+            <View style={styles.statCard}>
+              <Text style={styles.statValue}>{knownWords.length}</Text>
+              <Text style={styles.statLabel}>Known</Text>
+            </View>
           </View>
         </View>
-      </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>App</Text>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>App</Text>
 
-        <SettingsItem
-          icon="info"
-          title="About WordBook"
-          onPress={() =>
-            setModalContent({
-              title: "About WordBook",
-              content:
-                "WordBook is a simple vocabulary learning app. Add words, listen to pronunciation, practice with flashcards, and track your learning progress.",
-            })
-          }
+          <SettingsItem
+            icon="info"
+            title="About WordBook"
+            onPress={() =>
+              setModalContent({
+                title: "About WordBook",
+                content:
+                  "WordBook is a simple vocabulary learning app. Add words, listen to pronunciation, practice with flashcards, and track your learning progress.",
+              })
+            }
+          />
+
+          <SettingsItem
+            icon="shield"
+            title="Privacy Policy"
+            onPress={() =>
+              setModalContent({
+                title: "Privacy Policy",
+                content:
+                  "WordBook stores your words locally on your device. The app does not send your vocabulary data to any external server.",
+              })
+            }
+          />
+
+          <SettingsItem
+            icon="file-text"
+            title="Terms of Use"
+            onPress={() =>
+              setModalContent({
+                title: "Terms of Use",
+                content:
+                  "WordBook is provided for personal learning purposes. You are responsible for the words and content you add to the app.",
+              })
+            }
+          />
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Support</Text>
+
+          <SettingsItem
+            icon="mail"
+            title="Contact us"
+            onPress={() =>
+              setModalContent({
+                title: "Contact us",
+                content:
+                  "For questions, feedback, or support, please contact the WordBook team at support@wordbook.app.",
+              })
+            }
+          />
+        </View>
+
+        <View style={styles.footer}>
+          <Text style={styles.version}>Version 1.0.0</Text>
+        </View>
+
+        <InfoModal
+          visible={modalContent !== null}
+          title={modalContent?.title ?? ""}
+          content={modalContent?.content ?? ""}
+          onClose={() => setModalContent(null)}
         />
-
-        <SettingsItem
-          icon="shield"
-          title="Privacy Policy"
-          onPress={() =>
-            setModalContent({
-              title: "Privacy Policy",
-              content:
-                "WordBook stores your words locally on your device. The app does not send your vocabulary data to any external server.",
-            })
-          }
-        />
-
-        <SettingsItem
-          icon="file-text"
-          title="Terms of Use"
-          onPress={() =>
-            setModalContent({
-              title: "Terms of Use",
-              content:
-                "WordBook is provided for personal learning purposes. You are responsible for the words and content you add to the app.",
-            })
-          }
-        />
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Support</Text>
-
-        <SettingsItem
-          icon="mail"
-          title="Contact us"
-          onPress={() =>
-            setModalContent({
-              title: "Contact us",
-              content:
-                "For questions, feedback, or support, please contact the WordBook team at support@wordbook.app.",
-            })
-          }
-        />
-      </View>
-
-      <View style={styles.footer}>
-        <Text style={styles.version}>Version 1.0.0</Text>
-      </View>
-
-      <InfoModal
-        visible={modalContent !== null}
-        title={modalContent?.title ?? ""}
-        content={modalContent?.content ?? ""}
-        onClose={() => setModalContent(null)}
-      />
+      </ScrollView>
     </ScreenContainer>
   );
 }
@@ -139,6 +144,11 @@ function SettingsItem({ icon, title, onPress }: SettingsItemProps) {
 }
 
 const styles = StyleSheet.create({
+  content: {
+    flexGrow: 1,
+    paddingBottom: 24,
+  },
+
   section: {
     marginTop: 24,
   },
@@ -205,8 +215,9 @@ const styles = StyleSheet.create({
   },
 
   footer: {
-    marginTop: 32,
+    marginTop: "auto",
     alignItems: "center",
+    paddingTop: 32,
     paddingBottom: 12,
   },
 
