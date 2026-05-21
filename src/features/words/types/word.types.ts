@@ -6,4 +6,5 @@ export type Word = {
   translation: string;
   status: WordStatus;
   example?: string;
+  category?: string;
 };

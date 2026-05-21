@@ -16,6 +16,7 @@ export default function EditWordScreen() {
   const [word, setWord] = useState(wordItem?.word ?? "");
   const [translation, setTranslation] = useState(wordItem?.translation ?? "");
   const [example, setExample] = useState(wordItem?.example ?? "");
+  const [category, setCategory] = useState(wordItem?.category ?? "");
 
   const [errors, setErrors] = useState({
     word: "",
@@ -61,6 +62,7 @@ export default function EditWordScreen() {
       word: trimmedWord,
       translation: trimmedTranslation,
       example: example.trim() || undefined,
+      category: category.trim() || undefined,
     });
 
     router.replace({
@@ -127,6 +129,16 @@ export default function EditWordScreen() {
         {errors.translation ? (
           <Text style={styles.error}>{errors.translation}</Text>
         ) : null}
+
+        <Text style={styles.label}>Category (optional)</Text>
+        <TextInput
+          style={styles.input}
+          value={category}
+          onChangeText={setCategory}
+          placeholder="Enter category, e.g. Travel"
+          placeholderTextColor={colors.text.secondary}
+          autoCapitalize="words"
+        />
 
         <Text style={styles.label}>Example sentence (optional)</Text>
         <TextInput

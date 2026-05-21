@@ -67,6 +67,12 @@ export default function WordDetailsScreen() {
         </View>
         <Text style={styles.translation}>{wordItem.translation}</Text>
 
+        {wordItem.category ? (
+          <View style={styles.categoryBadge}>
+            <Text style={styles.categoryText}>{wordItem.category}</Text>
+          </View>
+        ) : null}
+
         {wordItem.example && (
           <View style={styles.exampleCard}>
             <Text style={styles.exampleLabel}>Example:</Text>
@@ -157,6 +163,21 @@ const styles = StyleSheet.create({
     color: colors.text.secondary,
     textAlign: "center",
     marginBottom: 24,
+  },
+
+  categoryBadge: {
+    alignSelf: "center",
+    marginBottom: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 12,
+    backgroundColor: "#E8F7FF",
+  },
+
+  categoryText: {
+    fontSize: 13,
+    fontWeight: "500",
+    color: colors.primary,
   },
 
   exampleCard: {

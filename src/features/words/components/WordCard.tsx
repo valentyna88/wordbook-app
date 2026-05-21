@@ -41,6 +41,12 @@ export function WordCard({ item, onPress }: Props) {
       </View>
 
       <Text style={styles.translation}>{item.translation}</Text>
+
+      {item.category ? (
+        <View style={styles.categoryBadge}>
+          <Text style={styles.categoryText}>{item.category}</Text>
+        </View>
+      ) : null}
     </Pressable>
   );
 }
@@ -90,5 +96,20 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "400",
     color: colors.text.secondary,
+  },
+
+  categoryBadge: {
+    alignSelf: "flex-start",
+    marginTop: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 10,
+    backgroundColor: "#E8F7FF",
+  },
+
+  categoryText: {
+    fontSize: 12,
+    fontWeight: "500",
+    color: colors.primary,
   },
 });

@@ -12,6 +12,7 @@ type NewWord = {
   word: string;
   translation: string;
   example?: string;
+  category?: string;
 };
 
 type WordsContextType = {
@@ -72,6 +73,7 @@ export function WordsProvider({ children }: { children: ReactNode }) {
       translation: newWord.translation,
       status: "learning",
       example: newWord.example,
+      category: newWord.category,
     };
 
     setWords((prev) => [wordToAdd, ...prev]);

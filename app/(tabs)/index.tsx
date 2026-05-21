@@ -6,6 +6,7 @@ import { SearchInput } from "@/src/components/ui/SearchInput";
 import { Toast } from "@/src/components/ui/Toast";
 import { colors } from "@/src/constants/colors";
 import { useWords } from "@/src/context/WordsContext";
+import { CategoryFilter } from "@/src/features/words/components/CategoryFilter";
 import { EmptyState } from "@/src/features/words/components/EmptyState";
 import {
   StatusFilter,
@@ -22,6 +23,8 @@ export default function HomeScreen() {
   };
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All categories");
+  const [isCategoryModalVisible, setIsCategoryModalVisible] = useState(false);
   const [statusFilter, setStatusFilter] = useState<StatusFilterValue>("all");
   const [toast, setToast] = useState<{
     message: string;
@@ -52,6 +55,15 @@ export default function HomeScreen() {
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const { words, isLoading } = useWords();
+
+  const categories = Array.from(
+    new Set(
+      words
+        .map((word) => word.category)
+        .filter((category): category is string => Boolean(category)),
+    ),
+  );
+
   const filteredWords = words.filter((item) => {
     const matchesSearch =
       item.word.toLowerCase().includes(normalizedQuery) ||
@@ -60,8 +72,14 @@ export default function HomeScreen() {
     const matchesStatus =
       statusFilter === "all" || item.status === statusFilter;
 
-    return matchesSearch && matchesStatus;
+    const matchesCategory =
+      selectedCategory === "All categories" ||
+      item.category === selectedCategory;
+
+    return matchesSearch && matchesStatus && matchesCategory;
   });
+
+  const isCategorySelected = selectedCategory !== "All categories";
 
   const hasWords = words.length > 0;
   const showSearchEmptyState =
@@ -110,6 +128,16 @@ export default function HomeScreen() {
           <View style={styles.header}>
             <ScreenTitle title="My Words" />
             <SearchInput value={searchQuery} onChangeText={setSearchQuery} />
+
+            <CategoryFilter
+              categories={categories}
+              selectedCategory={selectedCategory}
+              onChange={setSelectedCategory}
+              visible={isCategoryModalVisible}
+              onOpen={() => setIsCategoryModalVisible(true)}
+              onClose={() => setIsCategoryModalVisible(false)}
+            />
+
             <StatusFilter value={statusFilter} onChange={setStatusFilter} />
           </View>
         }
@@ -134,8 +162,12 @@ export default function HomeScreen() {
             <EmptyState
               title={
                 statusFilter === "learning"
-                  ? "No learning words"
-                  : "No known words"
+                  ? isCategorySelected
+                    ? `No learning words in ${selectedCategory}`
+                    : "No learning words"
+                  : isCategorySelected
+                    ? `No known words in ${selectedCategory}`
+                    : "No known words"
               }
               subtitle={
                 statusFilter === "learning"
