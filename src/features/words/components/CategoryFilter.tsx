@@ -93,7 +93,7 @@ export function CategoryFilter({
 const styles = StyleSheet.create({
   trigger: {
     marginTop: 12,
-    marginBottom: 12,
+    marginBottom: 8,
     backgroundColor: colors.card,
     borderRadius: 14,
     paddingVertical: 10,

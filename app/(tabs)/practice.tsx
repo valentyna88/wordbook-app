@@ -6,12 +6,25 @@ import { PracticeCard } from "@/src/features/practice/components/PracticeCard";
 import { PracticeNavigation } from "@/src/features/practice/components/PracticeNavigation";
 import { PracticeResult } from "@/src/features/practice/components/PracticeResult";
 import { usePracticeSession } from "@/src/features/practice/hooks/usePracticeSession";
+import { CategoryFilter } from "@/src/features/words/components/CategoryFilter";
 import { router } from "expo-router";
 import * as Speech from "expo-speech";
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 export default function PracticeScreen() {
   const { words, toggleWordStatus } = useWords();
+
+  const [selectedCategory, setSelectedCategory] = useState("All categories");
+  const [isCategoryModalVisible, setIsCategoryModalVisible] = useState(false);
+
+  const categories = Array.from(
+    new Set(
+      words
+        .map((word) => word.category)
+        .filter((category): category is string => Boolean(category)),
+    ),
+  );
 
   const {
     currentWord,
@@ -29,6 +42,7 @@ export default function PracticeScreen() {
     handleStillLearning,
   } = usePracticeSession({
     words,
+    selectedCategory,
     onMarkAsKnown: toggleWordStatus,
   });
   const handleSpeak = () => {
@@ -43,6 +57,17 @@ export default function PracticeScreen() {
     });
   };
 
+  const categoryFilter = (
+    <CategoryFilter
+      categories={categories}
+      selectedCategory={selectedCategory}
+      onChange={setSelectedCategory}
+      visible={isCategoryModalVisible}
+      onOpen={() => setIsCategoryModalVisible(true)}
+      onClose={() => setIsCategoryModalVisible(false)}
+    />
+  );
+
   if (!currentWord) {
     return (
       <ScreenContainer>
@@ -50,10 +75,13 @@ export default function PracticeScreen() {
           <ScreenTitle title="Practice" />
         </View>
 
+        {categoryFilter}
+
         <PracticeResult
           isCompleted={isPracticeCompleted}
           reviewedCount={reviewedCount}
           knownCount={knownCount}
+          selectedCategory={selectedCategory}
           onBackToWords={() => router.push("/")}
         />
       </ScreenContainer>
@@ -65,6 +93,8 @@ export default function PracticeScreen() {
       <View style={styles.header}>
         <ScreenTitle title="Practice" />
       </View>
+
+      {categoryFilter}
 
       <View style={styles.content}>
         <PracticeCard
@@ -91,7 +121,7 @@ export default function PracticeScreen() {
 
 const styles = StyleSheet.create({
   header: {
-    marginBottom: 18,
+    marginBottom: 8,
   },
   content: {
     flex: 1,
