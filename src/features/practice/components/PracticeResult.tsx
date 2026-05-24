@@ -5,6 +5,7 @@ type PracticeResultProps = {
   isCompleted: boolean;
   reviewedCount: number;
   knownCount: number;
+  selectedCategory: string;
   onBackToWords: () => void;
 };
 
@@ -12,31 +13,44 @@ export function PracticeResult({
   isCompleted,
   reviewedCount,
   knownCount,
+  selectedCategory,
   onBackToWords,
 }: PracticeResultProps) {
+  const isCategorySelected = selectedCategory !== "All categories";
+
+  const emptyTitle = isCategorySelected
+    ? `No learning words in ${selectedCategory}`
+    : "No words to practice";
+
+  const emptySubtitle = isCategorySelected
+    ? "Try another category or mark words as learning"
+    : "Add new words or mark some words as learning";
+
   return (
     <>
       <View style={styles.card}>
         <Text style={styles.title}>
-          {isCompleted ? "Practice completed" : "No words to practice"}
+          {isCompleted ? "Great job!" : emptyTitle}
         </Text>
 
         <Text style={styles.subtitle}>
           {isCompleted
             ? `Reviewed: ${reviewedCount} Known: ${knownCount}`
-            : "Add new words or mark some words as learning"}
+            : emptySubtitle}
         </Text>
       </View>
 
-      <Pressable
-        style={({ pressed }) => [
-          styles.resultButton,
-          pressed && styles.buttonPressed,
-        ]}
-        onPress={onBackToWords}
-      >
-        <Text style={styles.resultButtonText}>Back to words</Text>
-      </Pressable>
+      {isCompleted && (
+        <Pressable
+          style={({ pressed }) => [
+            styles.resultButton,
+            pressed && styles.buttonPressed,
+          ]}
+          onPress={onBackToWords}
+        >
+          <Text style={styles.resultButtonText}>Go to My Words</Text>
+        </Pressable>
+      )}
     </>
   );
 }
