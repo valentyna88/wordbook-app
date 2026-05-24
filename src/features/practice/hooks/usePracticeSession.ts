@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
 import { Word } from "@/src/features/words/types/word.types";
+import { useEffect, useState } from "react";
 
 type PracticeAnswer = "known" | "learning";
 
 type UsePracticeSessionParams = {
   words: Word[];
+  selectedCategory: string;
   onMarkAsKnown: (id: string) => void;
 };
 
 export function usePracticeSession({
   words,
+  selectedCategory,
   onMarkAsKnown,
 }: UsePracticeSessionParams) {
   const [isTranslationVisible, setIsTranslationVisible] = useState(false);
@@ -17,7 +19,16 @@ export function usePracticeSession({
   const [answers, setAnswers] = useState<Record<string, PracticeAnswer>>({});
   const [isPracticeCompleted, setIsPracticeCompleted] = useState(false);
 
-  const learningWords = words.filter((word) => word.status === "learning");
+  const learningWords = words.filter((word) => {
+    const matchesStatus = word.status === "learning";
+
+    const matchesCategory =
+      selectedCategory === "All categories" ||
+      word.category === selectedCategory;
+
+    return matchesStatus && matchesCategory;
+  });
+
   const currentWord = learningWords[currentIndex];
   const hasMultipleWords = learningWords.length > 1;
 
@@ -28,7 +39,14 @@ export function usePracticeSession({
       setIsTranslationVisible(false);
       setIsPracticeCompleted(false);
     }
-  }, [isPracticeCompleted, learningWords.length]);
+  }, [isPracticeCompleted, learningWords.length, selectedCategory]);
+
+  useEffect(() => {
+    setAnswers({});
+    setCurrentIndex(0);
+    setIsTranslationVisible(false);
+    setIsPracticeCompleted(false);
+  }, [selectedCategory]);
 
   const reviewedCount = Object.keys(answers).length;
 
