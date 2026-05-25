@@ -5,13 +5,13 @@ type PracticeAnswer = "known" | "learning";
 
 type UsePracticeSessionParams = {
   words: Word[];
-  selectedCategory: string;
-  onMarkAsKnown: (id: string) => void;
+  selectedCategory?: string;
+  onMarkAsKnown?: (id: string) => void;
 };
 
 export function usePracticeSession({
   words,
-  selectedCategory,
+  selectedCategory = "All categories",
   onMarkAsKnown,
 }: UsePracticeSessionParams) {
   const [isTranslationVisible, setIsTranslationVisible] = useState(false);
@@ -19,15 +19,17 @@ export function usePracticeSession({
   const [answers, setAnswers] = useState<Record<string, PracticeAnswer>>({});
   const [isPracticeCompleted, setIsPracticeCompleted] = useState(false);
 
-  const learningWords = words.filter((word) => {
-    const matchesStatus = word.status === "learning";
+  const learningWords = words
+    .filter((word) => {
+      const matchesStatus = word.status === "learning";
 
-    const matchesCategory =
-      selectedCategory === "All categories" ||
-      word.category === selectedCategory;
+      const matchesCategory =
+        selectedCategory === "All categories" ||
+        word.category === selectedCategory;
 
-    return matchesStatus && matchesCategory;
-  });
+      return matchesStatus && matchesCategory;
+    })
+    .filter((word) => answers[word.id] !== "known");
 
   const currentWord = learningWords[currentIndex];
   const hasMultipleWords = learningWords.length > 1;
@@ -90,7 +92,7 @@ export function usePracticeSession({
       [currentWord.id]: "known",
     }));
 
-    onMarkAsKnown(currentWord.id);
+    onMarkAsKnown?.(currentWord.id);
     setIsTranslationVisible(false);
 
     setCurrentIndex((prevIndex) => {

@@ -6,6 +6,7 @@ type PracticeResultProps = {
   reviewedCount: number;
   knownCount: number;
   selectedCategory: string;
+  buttonTitle?: string;
   onBackToWords: () => void;
 };
 
@@ -14,6 +15,7 @@ export function PracticeResult({
   reviewedCount,
   knownCount,
   selectedCategory,
+  buttonTitle = "Go to My Words",
   onBackToWords,
 }: PracticeResultProps) {
   const isCategorySelected = selectedCategory !== "All categories";
@@ -48,7 +50,7 @@ export function PracticeResult({
           ]}
           onPress={onBackToWords}
         >
-          <Text style={styles.resultButtonText}>Go to My Words</Text>
+          <Text style={styles.resultButtonText}>{buttonTitle}</Text>
         </Pressable>
       )}
     </>
