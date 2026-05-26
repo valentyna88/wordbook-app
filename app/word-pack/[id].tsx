@@ -1,11 +1,12 @@
+import { PrimaryButton } from "@/src/components/ui/PrimaryButton";
 import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
 import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
+import { colors } from "@/src/constants/colors";
 import { wordPacks } from "@/src/features/library/data/wordPacks";
 import { Feather } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
+import * as Speech from "expo-speech";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { colors } from "@/src/constants/colors";
-import { PrimaryButton } from "@/src/components/ui/PrimaryButton";
 
 export default function WordPackDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -24,6 +25,14 @@ export default function WordPackDetailsScreen() {
     router.push({
       pathname: "/word-pack-practice/[id]",
       params: { id: pack.id },
+    });
+  };
+
+  const handleSpeak = (word: string) => {
+    Speech.speak(word, {
+      language: "en",
+      pitch: 1,
+      rate: 0.9,
     });
   };
 
@@ -46,7 +55,14 @@ export default function WordPackDetailsScreen() {
 
         {pack.words.map((item) => (
           <View key={item.word} style={styles.wordRow}>
-            <Text style={styles.word}>{item.word}</Text>
+            <View style={styles.wordHeader}>
+              <Text style={styles.word}>{item.word}</Text>
+
+              <Pressable onPress={() => handleSpeak(item.word)}>
+                <Feather name="volume-2" size={20} color={colors.primary} />
+              </Pressable>
+            </View>
+
             <Text style={styles.translation}>{item.translation}</Text>
           </View>
         ))}
@@ -104,5 +120,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: colors.text.secondary,
     marginTop: 4,
+  },
+
+  wordHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
