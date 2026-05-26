@@ -118,6 +118,13 @@ export function usePracticeSession({
     handleNextWord();
   };
 
+  const resetPractice = () => {
+    setAnswers({});
+    setCurrentIndex(0);
+    setIsTranslationVisible(false);
+    setIsPracticeCompleted(false);
+  };
+
   return {
     currentWord,
     learningWords,
@@ -132,5 +139,6 @@ export function usePracticeSession({
     handlePreviousWord,
     handleKnowWord,
     handleStillLearning,
+    resetPractice,
   };
 }
