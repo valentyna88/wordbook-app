@@ -7,6 +7,7 @@ type PracticeResultProps = {
   knownCount: number;
   selectedCategory: string;
   buttonTitle?: string;
+  onRepeat?: () => void;
   onBackToWords: () => void;
 };
 
@@ -16,6 +17,7 @@ export function PracticeResult({
   knownCount,
   selectedCategory,
   buttonTitle = "Go to My Words",
+  onRepeat,
   onBackToWords,
 }: PracticeResultProps) {
   const isCategorySelected = selectedCategory !== "All categories";
@@ -32,26 +34,46 @@ export function PracticeResult({
     <>
       <View style={styles.card}>
         <Text style={styles.title}>
-          {isCompleted ? "Great job!" : emptyTitle}
+          {isCompleted ? "Practice completed" : emptyTitle}
         </Text>
 
-        <Text style={styles.subtitle}>
-          {isCompleted
-            ? `Reviewed: ${reviewedCount} Known: ${knownCount}`
-            : emptySubtitle}
-        </Text>
+        {isCompleted ? (
+          <View style={styles.stats}>
+            <Text style={styles.resultStats}>
+              You reviewed {reviewedCount} words
+            </Text>
+
+            <Text style={styles.resultStats}>You knew {knownCount} words</Text>
+          </View>
+        ) : (
+          <Text style={styles.subtitle}>{emptySubtitle}</Text>
+        )}
       </View>
 
       {isCompleted && (
-        <Pressable
-          style={({ pressed }) => [
-            styles.resultButton,
-            pressed && styles.buttonPressed,
-          ]}
-          onPress={onBackToWords}
-        >
-          <Text style={styles.resultButtonText}>{buttonTitle}</Text>
-        </Pressable>
+        <View style={styles.resultActions}>
+          {onRepeat ? (
+            <Pressable
+              style={({ pressed }) => [
+                styles.resultButton,
+                pressed && styles.buttonPressed,
+              ]}
+              onPress={onRepeat}
+            >
+              <Text style={styles.resultButtonText}>Repeat practice</Text>
+            </Pressable>
+          ) : null}
+
+          <Pressable
+            style={({ pressed }) => [
+              styles.secondaryResultButton,
+              pressed && styles.buttonPressed,
+            ]}
+            onPress={onBackToWords}
+          >
+            <Text style={styles.secondaryResultButtonText}>{buttonTitle}</Text>
+          </Pressable>
+        </View>
       )}
     </>
   );
@@ -73,11 +95,23 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 36,
-    lineHeight: 50,
-    fontWeight: "500",
+    fontSize: 30,
+    lineHeight: 38,
+    fontWeight: "700",
     color: colors.text.primary,
-    marginBottom: 16,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+
+  stats: {
+    alignItems: "center",
+    gap: 6,
+  },
+
+  resultStats: {
+    fontSize: 17,
+    lineHeight: 24,
+    color: colors.text.secondary,
     textAlign: "center",
   },
 
@@ -104,5 +138,24 @@ const styles = StyleSheet.create({
 
   buttonPressed: {
     opacity: 0.8,
+  },
+
+  resultActions: {
+    marginTop: 24,
+    alignItems: "center",
+    gap: 12,
+  },
+
+  secondaryResultButton: {
+    alignSelf: "center",
+    borderRadius: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+  },
+
+  secondaryResultButtonText: {
+    color: colors.text.secondary,
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
