@@ -32,6 +32,7 @@ export default function WordPackPracticeScreen() {
     handlePreviousWord,
     handleKnowWord,
     handleStillLearning,
+    resetPractice,
   } = usePracticeSession({
     words: packWords,
   });
@@ -77,6 +78,7 @@ export default function WordPackPracticeScreen() {
           knownCount={knownCount}
           selectedCategory="All categories"
           buttonTitle="Back to pack"
+          onRepeat={resetPractice}
           onBackToWords={() => router.back()}
         />
       </ScreenContainer>
