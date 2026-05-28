@@ -27,6 +27,7 @@ export default function WordPackPracticeScreen() {
     isPracticeCompleted,
     reviewedCount,
     knownCount,
+    stillLearningCount,
     toggleTranslation,
     handleNextWord,
     handlePreviousWord,
@@ -76,10 +77,14 @@ export default function WordPackPracticeScreen() {
           isCompleted={isPracticeCompleted}
           reviewedCount={reviewedCount}
           knownCount={knownCount}
+          stillLearningCount={stillLearningCount}
           selectedCategory="All categories"
           buttonTitle="Back to pack"
           onRepeat={resetPractice}
-          onBackToWords={() => router.back()}
+          onBackToWords={() => {
+            resetPractice();
+            router.back();
+          }}
         />
       </ScreenContainer>
     );

@@ -7,9 +7,9 @@ import { PracticeNavigation } from "@/src/features/practice/components/PracticeN
 import { PracticeResult } from "@/src/features/practice/components/PracticeResult";
 import { usePracticeSession } from "@/src/features/practice/hooks/usePracticeSession";
 import { CategoryFilter } from "@/src/features/words/components/CategoryFilter";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import * as Speech from "expo-speech";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 export default function PracticeScreen() {
@@ -35,16 +35,27 @@ export default function PracticeScreen() {
     isPracticeCompleted,
     reviewedCount,
     knownCount,
+    stillLearningCount,
     toggleTranslation,
     handleNextWord,
     handlePreviousWord,
     handleKnowWord,
     handleStillLearning,
+    resetPractice,
   } = usePracticeSession({
     words,
     selectedCategory,
     onMarkAsKnown: toggleWordStatus,
   });
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        resetPractice();
+      };
+    }, [resetPractice]),
+  );
+
   const handleSpeak = () => {
     if (!currentWord) {
       return;
@@ -81,8 +92,12 @@ export default function PracticeScreen() {
           isCompleted={isPracticeCompleted}
           reviewedCount={reviewedCount}
           knownCount={knownCount}
+          stillLearningCount={stillLearningCount}
           selectedCategory={selectedCategory}
-          onBackToWords={() => router.push("/")}
+          onBackToWords={() => {
+            resetPractice();
+            router.push("/");
+          }}
         />
       </ScreenContainer>
     );
