@@ -1,5 +1,6 @@
 import { colors } from "@/src/constants/colors";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import ConfettiCannon from "react-native-confetti-cannon";
 
 type PracticeResultProps = {
   isCompleted: boolean;
@@ -34,6 +35,18 @@ export function PracticeResult({
 
   return (
     <>
+      {isCompleted && (
+        <View pointerEvents="none" style={styles.confetti}>
+          <ConfettiCannon
+            count={60}
+            origin={{ x: 200, y: -20 }}
+            explosionSpeed={250}
+            fallSpeed={2200}
+            fadeOut
+          />
+        </View>
+      )}
+
       <View style={styles.card}>
         <Text style={styles.title}>
           {isCompleted ? "Practice completed" : emptyTitle}
@@ -84,6 +97,12 @@ export function PracticeResult({
 }
 
 const styles = StyleSheet.create({
+  confetti: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 10,
+    elevation: 10,
+  },
+
   card: {
     backgroundColor: colors.card,
     borderRadius: 24,
