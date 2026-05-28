@@ -5,6 +5,7 @@ type PracticeResultProps = {
   isCompleted: boolean;
   reviewedCount: number;
   knownCount: number;
+  stillLearningCount: number;
   selectedCategory: string;
   buttonTitle?: string;
   onRepeat?: () => void;
@@ -15,6 +16,7 @@ export function PracticeResult({
   isCompleted,
   reviewedCount,
   knownCount,
+  stillLearningCount,
   selectedCategory,
   buttonTitle = "Go to My Words",
   onRepeat,
@@ -40,10 +42,12 @@ export function PracticeResult({
         {isCompleted ? (
           <View style={styles.stats}>
             <Text style={styles.resultStats}>
-              You reviewed {reviewedCount} words
+              Completed: {reviewedCount} words
             </Text>
-
-            <Text style={styles.resultStats}>You knew {knownCount} words</Text>
+            <Text style={styles.resultStats}> Known: {knownCount}</Text>
+            <Text style={styles.resultStats}>
+              Still learning: {stillLearningCount}
+            </Text>
           </View>
         ) : (
           <Text style={styles.subtitle}>{emptySubtitle}</Text>
