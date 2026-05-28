@@ -29,7 +29,7 @@ export function usePracticeSession({
 
       return matchesStatus && matchesCategory;
     })
-    .filter((word) => answers[word.id] !== "known");
+    .filter((word) => !answers[word.id]);
 
   const currentWord = learningWords[currentIndex];
   const hasMultipleWords = learningWords.length > 1;
@@ -54,6 +54,10 @@ export function usePracticeSession({
 
   const knownCount = Object.values(answers).filter(
     (status) => status === "known",
+  ).length;
+
+  const stillLearningCount = Object.values(answers).filter(
+    (status) => status === "learning",
   ).length;
 
   const toggleTranslation = () => {
@@ -110,12 +114,23 @@ export function usePracticeSession({
       return;
     }
 
+    const nextLearningWordsCount = learningWords.length - 1;
+
     setAnswers((prev) => ({
       ...prev,
       [currentWord.id]: "learning",
     }));
 
-    handleNextWord();
+    setIsTranslationVisible(false);
+
+    setCurrentIndex((prevIndex) => {
+      if (nextLearningWordsCount === 0) {
+        setIsPracticeCompleted(true);
+        return 0;
+      }
+
+      return prevIndex >= nextLearningWordsCount ? 0 : prevIndex;
+    });
   };
 
   const resetPractice = () => {
@@ -134,6 +149,7 @@ export function usePracticeSession({
     isPracticeCompleted,
     reviewedCount,
     knownCount,
+    stillLearningCount,
     toggleTranslation,
     handleNextWord,
     handlePreviousWord,
