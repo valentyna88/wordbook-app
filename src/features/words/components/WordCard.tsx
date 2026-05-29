@@ -1,5 +1,7 @@
 import { StatusBadge } from "@/src/components/ui/StatusBadge";
 import { colors } from "@/src/constants/colors";
+import { spacing } from "@/src/constants/spacing";
+import { typography } from "@/src/constants/typography";
 import { Feather } from "@expo/vector-icons";
 import * as Speech from "expo-speech";
 import { Pressable, StyleSheet, Text, View } from "react-native";
@@ -55,14 +57,14 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.card,
     borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
     shadowColor: colors.text.primary,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.08,
     shadowRadius: 20,
     elevation: 4,
-    gap: 8,
+    gap: spacing.sm,
   },
   cardPressed: {
     opacity: 0.92,
@@ -81,28 +83,26 @@ const styles = StyleSheet.create({
   rightActions: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    gap: spacing.sm,
   },
-
   speakButton: {
     padding: 6,
     borderRadius: 18,
   },
-
   speakButtonPressed: {
     opacity: 0.6,
   },
   translation: {
-    fontSize: 18,
-    fontWeight: "400",
+    fontSize: typography.subtitle.fontSize,
+    fontWeight: typography.subtitle.fontWeight,
+    lineHeight: typography.subtitle.lineHeight,
     color: colors.text.secondary,
   },
-
   categoryBadge: {
     alignSelf: "flex-start",
-    marginTop: 8,
+    marginTop: spacing.sm,
     paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingVertical: spacing.xs,
     borderRadius: 10,
     backgroundColor: "#E8F7FF",
   },
