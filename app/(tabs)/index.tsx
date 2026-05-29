@@ -16,6 +16,10 @@ import { WordCard } from "@/src/features/words/components/WordCard";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import {
+  SortFilter,
+  SortOption,
+} from "@/src/features/words/components/SortFilter";
 
 export default function HomeScreen() {
   const handleAddWordPress = () => {
@@ -26,6 +30,8 @@ export default function HomeScreen() {
   const [selectedCategory, setSelectedCategory] = useState("All categories");
   const [isCategoryModalVisible, setIsCategoryModalVisible] = useState(false);
   const [statusFilter, setStatusFilter] = useState<StatusFilterValue>("all");
+  const [selectedSort, setSelectedSort] = useState<SortOption>("newest");
+  const [isSortModalVisible, setIsSortModalVisible] = useState(false);
   const [toast, setToast] = useState<{
     message: string;
     type: "success" | "error" | "info";
@@ -88,6 +94,18 @@ export default function HomeScreen() {
   const showStatusEmptyState =
     hasWords && statusFilter !== "all" && filteredWords.length === 0;
 
+  const sortedWords = [...filteredWords].sort((a, b) => {
+    if (selectedSort === "newest") {
+      return Number(b.id) - Number(a.id);
+    }
+
+    if (selectedSort === "oldest") {
+      return Number(a.id) - Number(b.id);
+    }
+
+    return a.word.localeCompare(b.word);
+  });
+
   if (isLoading) {
     return (
       <ScreenContainer>
@@ -120,14 +138,29 @@ export default function HomeScreen() {
   return (
     <ScreenContainer>
       <FlatList
-        data={filteredWords}
+        data={sortedWords}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
           <View style={styles.header}>
             <ScreenTitle title="My Words" />
-            <SearchInput value={searchQuery} onChangeText={setSearchQuery} />
+            <View style={styles.searchRow}>
+              <View style={styles.searchWrapper}>
+                <SearchInput
+                  value={searchQuery}
+                  onChangeText={setSearchQuery}
+                />
+              </View>
+
+              <SortFilter
+                selectedSort={selectedSort}
+                visible={isSortModalVisible}
+                onChange={setSelectedSort}
+                onOpen={() => setIsSortModalVisible(true)}
+                onClose={() => setIsSortModalVisible(false)}
+              />
+            </View>
 
             <CategoryFilter
               categories={categories}
@@ -196,5 +229,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  searchRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    marginBottom: 16,
+  },
+
+  searchWrapper: {
+    flex: 1,
   },
 });
