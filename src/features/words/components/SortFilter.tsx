@@ -82,9 +82,9 @@ export function SortFilter({
 
 const styles = StyleSheet.create({
   trigger: {
-    width: 52,
-    height: 52,
-    borderRadius: 14,
+    width: 40,
+    height: 40,
+    borderRadius: 10,
     backgroundColor: colors.card,
     alignItems: "center",
     justifyContent: "center",

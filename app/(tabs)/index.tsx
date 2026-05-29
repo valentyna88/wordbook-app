@@ -9,6 +9,10 @@ import { useWords } from "@/src/context/WordsContext";
 import { CategoryFilter } from "@/src/features/words/components/CategoryFilter";
 import { EmptyState } from "@/src/features/words/components/EmptyState";
 import {
+  SortFilter,
+  SortOption,
+} from "@/src/features/words/components/SortFilter";
+import {
   StatusFilter,
   StatusFilterValue,
 } from "@/src/features/words/components/StatusFilter";
@@ -16,10 +20,6 @@ import { WordCard } from "@/src/features/words/components/WordCard";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
-import {
-  SortFilter,
-  SortOption,
-} from "@/src/features/words/components/SortFilter";
 
 export default function HomeScreen() {
   const handleAddWordPress = () => {
@@ -235,6 +235,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 12,
     marginBottom: 16,
+    marginTop: 16,
   },
 
   searchWrapper: {
