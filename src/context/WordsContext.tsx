@@ -7,6 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { storageKeys } from "@/src/constants/storageKeys";
 
 type NewWord = {
   word: string;
@@ -24,8 +25,6 @@ type WordsContextType = {
   toggleWordStatus: (id: string) => void;
 };
 
-const STORAGE_KEY = "WORDS_STORAGE";
-
 const WordsContext = createContext<WordsContextType | undefined>(undefined);
 
 export function WordsProvider({ children }: { children: ReactNode }) {
@@ -35,7 +34,7 @@ export function WordsProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const loadWords = async () => {
       try {
-        const storedWords = await AsyncStorage.getItem(STORAGE_KEY);
+        const storedWords = await AsyncStorage.getItem(storageKeys.words);
 
         if (storedWords) {
           setWords(JSON.parse(storedWords));
@@ -57,7 +56,7 @@ export function WordsProvider({ children }: { children: ReactNode }) {
 
     const saveWords = async () => {
       try {
-        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(words));
+        await AsyncStorage.setItem(storageKeys.words, JSON.stringify(words));
       } catch (error) {
         console.log("Error saving words:", error);
       }
