@@ -17,6 +17,7 @@ import {
   StatusFilterValue,
 } from "@/src/features/words/components/StatusFilter";
 import { WordCard } from "@/src/features/words/components/WordCard";
+import { sortWords } from "@/src/features/words/utils/sortWords";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
@@ -94,17 +95,7 @@ export default function HomeScreen() {
   const showStatusEmptyState =
     hasWords && statusFilter !== "all" && filteredWords.length === 0;
 
-  const sortedWords = [...filteredWords].sort((a, b) => {
-    if (selectedSort === "newest") {
-      return Number(b.id) - Number(a.id);
-    }
-
-    if (selectedSort === "oldest") {
-      return Number(a.id) - Number(b.id);
-    }
-
-    return a.word.localeCompare(b.word);
-  });
+  const sortedWords = sortWords(filteredWords, selectedSort);
 
   if (isLoading) {
     return (

@@ -1,6 +1,7 @@
 import { colors } from "@/src/constants/colors";
 import { Feather } from "@expo/vector-icons";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { sortOptions } from "../types/sort.types";
 
 export type SortOption = "newest" | "oldest" | "az";
 
@@ -11,12 +12,6 @@ type SortFilterProps = {
   onOpen: () => void;
   onClose: () => void;
 };
-
-const sortOptions: { label: string; value: SortOption }[] = [
-  { label: "Newest first", value: "newest" },
-  { label: "Oldest first", value: "oldest" },
-  { label: "Alphabetical (A-Z)", value: "az" },
-];
 
 export function SortFilter({
   selectedSort,
