@@ -17,6 +17,8 @@ import {
   StatusFilterValue,
 } from "@/src/features/words/components/StatusFilter";
 import { WordCard } from "@/src/features/words/components/WordCard";
+import { filterWords } from "@/src/features/words/utils/filterWords";
+import { getWordCategories } from "@/src/features/words/utils/getWordCategories";
 import { sortWords } from "@/src/features/words/utils/sortWords";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
@@ -60,30 +62,15 @@ export default function HomeScreen() {
     }
   }, [toastParam, type]);
 
-  const normalizedQuery = searchQuery.trim().toLowerCase();
   const { words, isLoading } = useWords();
 
-  const categories = Array.from(
-    new Set(
-      words
-        .map((word) => word.category)
-        .filter((category): category is string => Boolean(category)),
-    ),
-  );
+  const categories = getWordCategories(words);
 
-  const filteredWords = words.filter((item) => {
-    const matchesSearch =
-      item.word.toLowerCase().includes(normalizedQuery) ||
-      item.translation.toLowerCase().includes(normalizedQuery);
-
-    const matchesStatus =
-      statusFilter === "all" || item.status === statusFilter;
-
-    const matchesCategory =
-      selectedCategory === "All categories" ||
-      item.category === selectedCategory;
-
-    return matchesSearch && matchesStatus && matchesCategory;
+  const filteredWords = filterWords({
+    words,
+    searchQuery,
+    selectedCategory,
+    statusFilter,
   });
 
   const isCategorySelected = selectedCategory !== "All categories";
