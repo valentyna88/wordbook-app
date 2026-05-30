@@ -19,7 +19,6 @@ type WordsContextType = {
   words: Word[];
   isLoading: boolean;
   addWord: (newWord: NewWord) => void;
-  addWords: (newWords: NewWord[]) => void;
   deleteWord: (id: string) => void;
   updateWord: (updatedWord: Word) => void;
   toggleWordStatus: (id: string) => void;
@@ -80,19 +79,6 @@ export function WordsProvider({ children }: { children: ReactNode }) {
     setWords((prev) => [wordToAdd, ...prev]);
   };
 
-  const addWords = (newWords: NewWord[]) => {
-    const wordsToAdd: Word[] = newWords.map((newWord, index) => ({
-      id: `${Date.now()}-${index}`,
-      word: newWord.word,
-      translation: newWord.translation,
-      example: newWord.example,
-      category: newWord.category,
-      status: "learning",
-    }));
-
-    setWords((prevWords) => [...wordsToAdd, ...prevWords]);
-  };
-
   const deleteWord = (id: string) => {
     setWords((prev) => prev.filter((word) => word.id !== id));
   };
@@ -122,7 +108,6 @@ export function WordsProvider({ children }: { children: ReactNode }) {
         words,
         isLoading,
         addWord,
-        addWords,
         deleteWord,
         updateWord,
         toggleWordStatus,
