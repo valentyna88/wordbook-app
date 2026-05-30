@@ -1,4 +1,6 @@
 import { colors } from "@/src/constants/colors";
+import { spacing } from "@/src/constants/spacing";
+import { typography } from "@/src/constants/typography";
 import { Feather } from "@expo/vector-icons";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 import { sortOptions } from "../types/sort.types";
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
 
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    backgroundColor: "rgba(0, 0, 0, 0.35)",
     justifyContent: "flex-end",
   },
 
@@ -100,44 +102,49 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
-    paddingHorizontal: 24,
+    paddingHorizontal: spacing.lg,
     paddingTop: 12,
-    paddingBottom: 36,
+    paddingBottom: spacing.xl,
   },
 
   handle: {
-    width: 48,
+    width: 44,
     height: 5,
-    borderRadius: 3,
+    borderRadius: 999,
     backgroundColor: colors.border,
     alignSelf: "center",
-    marginBottom: 24,
+    marginBottom: 20,
   },
 
   sheetTitle: {
-    fontSize: 28,
-    fontWeight: "700",
+    fontSize: 22,
+    fontWeight: typography.title.fontWeight,
     color: colors.text.primary,
-    marginBottom: 16,
+    marginBottom: spacing.md,
   },
 
   option: {
     minHeight: 56,
-    borderRadius: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
+    borderRadius: 14,
+    paddingHorizontal: 12,
+    paddingVertical: 16,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
 
+  optionActive: {
+    backgroundColor: "#E8F7FF",
+  },
+
   optionText: {
-    fontSize: 18,
-    fontWeight: "600",
+    fontSize: 16,
+    fontWeight: "500",
     color: colors.text.primary,
   },
 
   optionTextActive: {
     color: colors.primary,
+    fontWeight: "700",
   },
 });
