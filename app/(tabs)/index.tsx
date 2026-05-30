@@ -19,16 +19,13 @@ import {
 import { WordCard } from "@/src/features/words/components/WordCard";
 import { filterWords } from "@/src/features/words/utils/filterWords";
 import { getWordCategories } from "@/src/features/words/utils/getWordCategories";
+import { getWordsEmptyState } from "@/src/features/words/utils/getWordsEmptyState";
 import { sortWords } from "@/src/features/words/utils/sortWords";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 
 export default function HomeScreen() {
-  const handleAddWordPress = () => {
-    router.push("/add-word");
-  };
-
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All categories");
   const [isCategoryModalVisible, setIsCategoryModalVisible] = useState(false);
@@ -39,6 +36,8 @@ export default function HomeScreen() {
     message: string;
     type: "success" | "error" | "info";
   } | null>(null);
+
+  const { words, isLoading } = useWords();
 
   const { toast: toastParam, type } = useLocalSearchParams<{
     toast?: string;
@@ -62,8 +61,6 @@ export default function HomeScreen() {
     }
   }, [toastParam, type]);
 
-  const { words, isLoading } = useWords();
-
   const categories = getWordCategories(words);
 
   const filteredWords = filterWords({
@@ -73,16 +70,21 @@ export default function HomeScreen() {
     statusFilter,
   });
 
-  const isCategorySelected = selectedCategory !== "All categories";
-
   const hasWords = words.length > 0;
-  const showSearchEmptyState =
-    hasWords && searchQuery.trim() !== "" && filteredWords.length === 0;
 
-  const showStatusEmptyState =
-    hasWords && statusFilter !== "all" && filteredWords.length === 0;
+  const wordsEmptyState = getWordsEmptyState({
+    hasWords,
+    searchQuery,
+    filteredWordsCount: filteredWords.length,
+    statusFilter,
+    selectedCategory,
+  });
 
   const sortedWords = sortWords(filteredWords, selectedSort);
+
+  const handleAddWordPress = () => {
+    router.push("/add-word");
+  };
 
   if (isLoading) {
     return (
@@ -164,27 +166,10 @@ export default function HomeScreen() {
           />
         )}
         ListEmptyComponent={
-          showSearchEmptyState ? (
+          wordsEmptyState ? (
             <EmptyState
-              title="Nothing found"
-              subtitle="Try another word or translation"
-            />
-          ) : showStatusEmptyState ? (
-            <EmptyState
-              title={
-                statusFilter === "learning"
-                  ? isCategorySelected
-                    ? `No learning words in ${selectedCategory}`
-                    : "No learning words"
-                  : isCategorySelected
-                    ? `No known words in ${selectedCategory}`
-                    : "No known words"
-              }
-              subtitle={
-                statusFilter === "learning"
-                  ? "Add new words or keep practicing"
-                  : "Mark words as known to see them here"
-              }
+              title={wordsEmptyState.title}
+              subtitle={wordsEmptyState.subtitle}
             />
           ) : null
         }
