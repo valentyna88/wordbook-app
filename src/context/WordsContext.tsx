@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 import { storageKeys } from "@/src/constants/storageKeys";
+import { createWord } from "../features/words/utils/createWord";
 
 type NewWord = {
   word: string;
@@ -66,16 +67,7 @@ export function WordsProvider({ children }: { children: ReactNode }) {
   }, [words, isLoading]);
 
   const addWord = (newWord: NewWord) => {
-    const wordToAdd: Word = {
-      id: Date.now().toString(),
-      word: newWord.word,
-      translation: newWord.translation,
-      status: "learning",
-      example: newWord.example,
-      category: newWord.category,
-    };
-
-    setWords((prev) => [wordToAdd, ...prev]);
+    setWords((prev) => [createWord(newWord), ...prev]);
   };
 
   const deleteWord = (id: string) => {
