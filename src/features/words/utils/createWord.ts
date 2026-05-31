@@ -1,11 +1,4 @@
-import { Word } from "@/src/features/words/types/word.types";
-
-type NewWord = {
-  word: string;
-  translation: string;
-  example?: string;
-  category?: string;
-};
+import { NewWord, Word } from "@/src/features/words/types/word.types";
 
 export function createWord(newWord: NewWord): Word {
   return {

@@ -1,4 +1,6 @@
-import { Word } from "@/src/features/words/types/word.types";
+import { storageKeys } from "@/src/constants/storageKeys";
+import { NewWord, Word } from "@/src/features/words/types/word.types";
+import { createWord } from "@/src/features/words/utils/createWord";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   createContext,
@@ -7,15 +9,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { storageKeys } from "@/src/constants/storageKeys";
-import { createWord } from "../features/words/utils/createWord";
-
-type NewWord = {
-  word: string;
-  translation: string;
-  example?: string;
-  category?: string;
-};
 
 type WordsContextType = {
   words: Word[];
