@@ -3,9 +3,7 @@ import { spacing } from "@/src/constants/spacing";
 import { typography } from "@/src/constants/typography";
 import { Feather } from "@expo/vector-icons";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
-import { sortOptions } from "../types/sort.types";
-
-export type SortOption = "newest" | "oldest" | "az";
+import { SortOption, sortOptions } from "../types/sort.types";
 
 type SortFilterProps = {
   selectedSort: SortOption;
@@ -27,6 +25,31 @@ export function SortFilter({
     onClose();
   };
 
+  const renderSortIcon = () => {
+    if (selectedSort === "az") {
+      return <Text style={styles.azIcon}>A-Z</Text>;
+    }
+
+    return (
+      <View style={styles.sortButton}>
+        <Feather
+          name="arrow-up"
+          size={16}
+          color={
+            selectedSort === "oldest" ? colors.primary : colors.text.secondary
+          }
+        />
+        <Feather
+          name="arrow-down"
+          size={16}
+          color={
+            selectedSort === "newest" ? colors.primary : colors.text.secondary
+          }
+        />
+      </View>
+    );
+  };
+
   return (
     <>
       <Pressable
@@ -36,7 +59,7 @@ export function SortFilter({
         ]}
         onPress={onOpen}
       >
-        <Feather name="sliders" size={20} color={colors.primary} />
+        {renderSortIcon()}
       </Pressable>
 
       <Modal visible={visible} animationType="slide" transparent>
@@ -90,6 +113,18 @@ const styles = StyleSheet.create({
 
   triggerPressed: {
     opacity: 0.8,
+  },
+
+  sortButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 2,
+  },
+
+  azIcon: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: colors.primary,
   },
 
   overlay: {
