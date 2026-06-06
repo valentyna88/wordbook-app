@@ -3,6 +3,7 @@ import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
 import { colors } from "@/src/constants/colors";
 import { useWords } from "@/src/context/WordsContext";
 import { CategorySelector } from "@/src/features/words/components/CategorySelector";
+import { defaultCategories } from "@/src/features/words/data/defaultCategories";
 import { hasDuplicateWord } from "@/src/features/words/utils/wordValidation";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -17,6 +18,15 @@ export default function AddWordScreen() {
   const [category, setCategory] = useState("");
   const [isCategorySelectorVisible, setIsCategorySelectorVisible] =
     useState(false);
+
+  const categories = Array.from(
+    new Set([
+      ...defaultCategories,
+      ...words
+        .map((word) => word.category)
+        .filter((category): category is string => Boolean(category)),
+    ]),
+  );
 
   const [errors, setErrors] = useState({
     word: "",
@@ -131,6 +141,7 @@ export default function AddWordScreen() {
 
         <CategorySelector
           value={category}
+          categories={categories}
           visible={isCategorySelectorVisible}
           onOpen={() => setIsCategorySelectorVisible(true)}
           onClose={() => setIsCategorySelectorVisible(false)}
