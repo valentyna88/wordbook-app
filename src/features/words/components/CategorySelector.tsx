@@ -50,7 +50,7 @@ export function CategorySelector({
 
             <Text style={styles.sheetTitle}>Choose category</Text>
 
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView style={styles.optionsList} showsVerticalScrollIndicator>
               {defaultCategories.map((category) => {
                 const isActive = value === category;
 
@@ -75,6 +75,12 @@ export function CategorySelector({
                   </Pressable>
                 );
               })}
+
+              <Pressable style={styles.customOption}>
+                <Feather name="plus" size={20} color={colors.primary} />
+
+                <Text style={styles.customOptionText}>Custom category</Text>
+              </Pressable>
             </ScrollView>
           </Pressable>
         </Pressable>
@@ -121,7 +127,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingTop: 12,
     paddingBottom: spacing.xl,
-    maxHeight: "80%",
+    maxHeight: "70%",
   },
 
   handle: {
@@ -138,6 +144,10 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: colors.text.primary,
     marginBottom: spacing.md,
+  },
+
+  optionsList: {
+    maxHeight: 520,
   },
 
   option: {
@@ -163,5 +173,20 @@ const styles = StyleSheet.create({
   optionTextActive: {
     color: colors.primary,
     fontWeight: "700",
+  },
+  customOption: {
+    minHeight: 56,
+    borderRadius: 14,
+    paddingHorizontal: 12,
+    paddingVertical: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
+  },
+
+  customOptionText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: colors.primary,
   },
 });
