@@ -2,6 +2,7 @@ import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
 import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
 import { colors } from "@/src/constants/colors";
 import { useWords } from "@/src/context/WordsContext";
+import { CategorySelector } from "@/src/features/words/components/CategorySelector";
 import { hasDuplicateWord } from "@/src/features/words/utils/wordValidation";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -14,6 +15,8 @@ export default function AddWordScreen() {
   const [translation, setTranslation] = useState("");
   const [example, setExample] = useState("");
   const [category, setCategory] = useState("");
+  const [isCategorySelectorVisible, setIsCategorySelectorVisible] =
+    useState(false);
 
   const [errors, setErrors] = useState({
     word: "",
@@ -125,13 +128,13 @@ export default function AddWordScreen() {
         ) : null}
 
         <Text style={styles.label}>Category (optional)</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter category, e.g. Travel"
-          placeholderTextColor={colors.text.secondary}
+
+        <CategorySelector
           value={category}
-          onChangeText={setCategory}
-          autoCapitalize="words"
+          visible={isCategorySelectorVisible}
+          onOpen={() => setIsCategorySelectorVisible(true)}
+          onClose={() => setIsCategorySelectorVisible(false)}
+          onChange={setCategory}
         />
 
         <Text style={styles.label}>Example sentence (optional)</Text>
