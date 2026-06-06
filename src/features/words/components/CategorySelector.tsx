@@ -1,18 +1,20 @@
 import { colors } from "@/src/constants/colors";
 import { spacing } from "@/src/constants/spacing";
-import { defaultCategories } from "@/src/features/words/data/defaultCategories";
 import { Feather } from "@expo/vector-icons";
+import { useState } from "react";
 import {
   Modal,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
 
 type CategorySelectorProps = {
   value?: string;
+  categories: string[];
   visible: boolean;
   onOpen: () => void;
   onClose: () => void;
@@ -21,6 +23,7 @@ type CategorySelectorProps = {
 
 export function CategorySelector({
   value,
+  categories,
   visible,
   onOpen,
   onClose,
@@ -28,8 +31,29 @@ export function CategorySelector({
 }: CategorySelectorProps) {
   const selectedLabel = value || "Choose category";
 
+  const [isCustomMode, setIsCustomMode] = useState(false);
+  const [customCategory, setCustomCategory] = useState("");
+
   const handleSelectCategory = (category: string) => {
     onChange(category);
+    onClose();
+  };
+
+  const handleOpenCustomMode = () => {
+    setCustomCategory("");
+    setIsCustomMode(true);
+  };
+
+  const handleSaveCustomCategory = () => {
+    const trimmedCategory = customCategory.trim();
+
+    if (!trimmedCategory) {
+      return;
+    }
+
+    onChange(trimmedCategory);
+    setIsCustomMode(false);
+    setCustomCategory("");
     onClose();
   };
 
@@ -48,40 +72,71 @@ export function CategorySelector({
           <Pressable style={styles.sheet} onPress={() => {}}>
             <View style={styles.handle} />
 
-            <Text style={styles.sheetTitle}>Choose category</Text>
+            <Text style={styles.sheetTitle}>
+              {isCustomMode ? "Custom category" : "Choose category"}
+            </Text>
 
-            <ScrollView style={styles.optionsList} showsVerticalScrollIndicator>
-              {defaultCategories.map((category) => {
-                const isActive = value === category;
+            {isCustomMode ? (
+              <View>
+                <TextInput
+                  style={styles.customInput}
+                  placeholder="Enter category name"
+                  placeholderTextColor={colors.text.secondary}
+                  value={customCategory}
+                  onChangeText={setCustomCategory}
+                  autoCapitalize="words"
+                />
 
-                return (
-                  <Pressable
-                    key={category}
-                    style={[styles.option, isActive && styles.optionActive]}
-                    onPress={() => handleSelectCategory(category)}
-                  >
-                    <Text
-                      style={[
-                        styles.optionText,
-                        isActive && styles.optionTextActive,
-                      ]}
+                <Pressable
+                  style={({ pressed }) => [
+                    styles.saveButton,
+                    pressed && styles.saveButtonPressed,
+                  ]}
+                  onPress={handleSaveCustomCategory}
+                >
+                  <Text style={styles.saveButtonText}>Save category</Text>
+                </Pressable>
+              </View>
+            ) : (
+              <ScrollView showsVerticalScrollIndicator>
+                {categories.map((category) => {
+                  const isActive = value === category;
+
+                  return (
+                    <Pressable
+                      key={category}
+                      style={[styles.option, isActive && styles.optionActive]}
+                      onPress={() => handleSelectCategory(category)}
                     >
-                      {category}
-                    </Text>
+                      <Text
+                        style={[
+                          styles.optionText,
+                          isActive && styles.optionTextActive,
+                        ]}
+                      >
+                        {category}
+                      </Text>
 
-                    {isActive ? (
-                      <Feather name="check" size={20} color={colors.primary} />
-                    ) : null}
-                  </Pressable>
-                );
-              })}
+                      {isActive ? (
+                        <Feather
+                          name="check"
+                          size={20}
+                          color={colors.primary}
+                        />
+                      ) : null}
+                    </Pressable>
+                  );
+                })}
 
-              <Pressable style={styles.customOption}>
-                <Feather name="plus" size={20} color={colors.primary} />
-
-                <Text style={styles.customOptionText}>Custom category</Text>
-              </Pressable>
-            </ScrollView>
+                <Pressable
+                  style={styles.customOption}
+                  onPress={handleOpenCustomMode}
+                >
+                  <Feather name="plus" size={20} color={colors.primary} />
+                  <Text style={styles.customOptionText}>Custom category</Text>
+                </Pressable>
+              </ScrollView>
+            )}
           </Pressable>
         </Pressable>
       </Modal>
@@ -144,6 +199,36 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: colors.text.primary,
     marginBottom: spacing.md,
+  },
+
+  customInput: {
+    minHeight: 56,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 14,
+    paddingHorizontal: spacing.md,
+    fontSize: 16,
+    color: colors.text.primary,
+    backgroundColor: colors.card,
+  },
+
+  saveButton: {
+    marginTop: spacing.md,
+    minHeight: 52,
+    borderRadius: 14,
+    backgroundColor: colors.primary,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  saveButtonPressed: {
+    opacity: 0.8,
+  },
+
+  saveButtonText: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: colors.card,
   },
 
   optionsList: {
