@@ -26,7 +26,7 @@ export default function AddWordScreen() {
         .map((word) => word.category)
         .filter((category): category is string => Boolean(category)),
     ]),
-  );
+  ).sort((a, b) => a.localeCompare(b));
 
   const [errors, setErrors] = useState({
     word: "",
