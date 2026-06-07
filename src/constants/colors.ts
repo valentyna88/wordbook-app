@@ -9,11 +9,11 @@ export const colors = {
   card: "#FFFFFF",
 
   status: {
-    learning: "#F7EF90",
-    known: "#78FF53",
+    learning: "#FDE68A",
+    known: "#A7F3D0",
   },
 
-  primary: "#00BFFF",
+  primary: "#38BDF8",
   danger: "#FF5151",
   border: "#E5E7EB",
 };
