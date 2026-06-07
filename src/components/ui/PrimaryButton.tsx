@@ -8,7 +8,7 @@ type PrimaryButtonProps = {
 
 export function PrimaryButton({ title, onPress }: PrimaryButtonProps) {
   return (
-    <Pressable style={styles.button}>
+    <Pressable style={styles.button} onPress={onPress}>
       <Text style={styles.text}>{title}</Text>
     </Pressable>
   );
