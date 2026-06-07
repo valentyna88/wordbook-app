@@ -20,7 +20,8 @@ export function CategoryFilter({
   onOpen,
   onClose,
 }: CategoryFilterProps) {
-  const options = ["All categories", ...categories];
+  const sortedCategories = [...categories].sort((a, b) => a.localeCompare(b));
+  const options = ["All categories", ...sortedCategories];
 
   const handleSelectCategory = (category: string) => {
     onChange(category);
