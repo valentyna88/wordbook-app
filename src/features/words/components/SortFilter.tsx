@@ -1,8 +1,9 @@
+import { BottomSheet } from "@/src/components/ui/BottomSheet";
 import { colors } from "@/src/constants/colors";
 import { spacing } from "@/src/constants/spacing";
 import { typography } from "@/src/constants/typography";
 import { Feather } from "@expo/vector-icons";
-import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SortOption, sortOptions } from "../types/sort.types";
 
 type SortFilterProps = {
@@ -62,40 +63,31 @@ export function SortFilter({
         {renderSortIcon()}
       </Pressable>
 
-      <Modal visible={visible} animationType="slide" transparent>
-        <Pressable style={styles.overlay} onPress={onClose}>
-          <Pressable style={styles.sheet} onPress={() => {}}>
-            <View style={styles.handle} />
+      <BottomSheet visible={visible} onClose={onClose}>
+        <Text style={styles.sheetTitle}>Sort by</Text>
 
-            <Text style={styles.sheetTitle}>Sort by</Text>
+        {sortOptions.map((option) => {
+          const isActive = selectedSort === option.value;
 
-            {sortOptions.map((option) => {
-              const isActive = selectedSort === option.value;
+          return (
+            <Pressable
+              key={option.value}
+              style={[styles.option, isActive && styles.optionActive]}
+              onPress={() => handleSelectSort(option.value)}
+            >
+              <Text
+                style={[styles.optionText, isActive && styles.optionTextActive]}
+              >
+                {option.label}
+              </Text>
 
-              return (
-                <Pressable
-                  key={option.value}
-                  style={[styles.option, isActive && styles.optionActive]}
-                  onPress={() => handleSelectSort(option.value)}
-                >
-                  <Text
-                    style={[
-                      styles.optionText,
-                      isActive && styles.optionTextActive,
-                    ]}
-                  >
-                    {option.label}
-                  </Text>
-
-                  {isActive ? (
-                    <Feather name="check" size={20} color={colors.primary} />
-                  ) : null}
-                </Pressable>
-              );
-            })}
-          </Pressable>
-        </Pressable>
-      </Modal>
+              {isActive ? (
+                <Feather name="check" size={20} color={colors.primary} />
+              ) : null}
+            </Pressable>
+          );
+        })}
+      </BottomSheet>
     </>
   );
 }
@@ -125,30 +117,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "700",
     color: colors.primary,
-  },
-
-  overlay: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.35)",
-    justifyContent: "flex-end",
-  },
-
-  sheet: {
-    backgroundColor: colors.background,
-    borderTopLeftRadius: 28,
-    borderTopRightRadius: 28,
-    paddingHorizontal: spacing.lg,
-    paddingTop: 12,
-    paddingBottom: spacing.xl,
-  },
-
-  handle: {
-    width: 44,
-    height: 5,
-    borderRadius: 999,
-    backgroundColor: colors.border,
-    alignSelf: "center",
-    marginBottom: 20,
   },
 
   sheetTitle: {
