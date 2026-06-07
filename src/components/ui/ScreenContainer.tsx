@@ -1,8 +1,8 @@
-import { View, StyleSheet } from "react-native";
 import { colors } from "@/src/constants/colors";
 import { spacing } from "@/src/constants/spacing";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { ReactNode } from "react";
+import { StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type Props = {
   children: ReactNode;
@@ -26,5 +26,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.md,
     gap: spacing.md,
+    backgroundColor: colors.background,
   },
 });
