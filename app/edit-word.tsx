@@ -2,6 +2,8 @@ import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
 import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
 import { colors } from "@/src/constants/colors";
 import { useWords } from "@/src/context/WordsContext";
+import { CategorySelector } from "@/src/features/words/components/CategorySelector";
+import { defaultCategories } from "@/src/features/words/data/defaultCategories";
 import { hasDuplicateWord } from "@/src/features/words/utils/wordValidation";
 import { Feather } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
@@ -17,6 +19,17 @@ export default function EditWordScreen() {
   const [translation, setTranslation] = useState(wordItem?.translation ?? "");
   const [example, setExample] = useState(wordItem?.example ?? "");
   const [category, setCategory] = useState(wordItem?.category ?? "");
+  const [isCategorySelectorVisible, setIsCategorySelectorVisible] =
+    useState(false);
+
+  const categories = Array.from(
+    new Set([
+      ...defaultCategories,
+      ...words
+        .map((word) => word.category)
+        .filter((category): category is string => Boolean(category)),
+    ]),
+  ).sort((a, b) => a.localeCompare(b));
 
   const [errors, setErrors] = useState({
     word: "",
@@ -131,13 +144,13 @@ export default function EditWordScreen() {
         ) : null}
 
         <Text style={styles.label}>Category (optional)</Text>
-        <TextInput
-          style={styles.input}
+        <CategorySelector
           value={category}
-          onChangeText={setCategory}
-          placeholder="Enter category, e.g. Travel"
-          placeholderTextColor={colors.text.secondary}
-          autoCapitalize="words"
+          categories={categories}
+          visible={isCategorySelectorVisible}
+          onOpen={() => setIsCategorySelectorVisible(true)}
+          onClose={() => setIsCategorySelectorVisible(false)}
+          onChange={setCategory}
         />
 
         <Text style={styles.label}>Example sentence (optional)</Text>
