@@ -4,6 +4,7 @@ import { colors } from "@/src/constants/colors";
 import { useWords } from "@/src/context/WordsContext";
 import { CategorySelector } from "@/src/features/words/components/CategorySelector";
 import { getAvailableCategories } from "@/src/features/words/utils/getAvailableCategories";
+import { validateWordForm } from "@/src/features/words/utils/wordValidation";
 import { Feather } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
@@ -36,26 +37,12 @@ export default function EditWordScreen() {
     const trimmedWord = word.trim();
     const trimmedTranslation = translation.trim();
 
-    const isDuplicate = hasDuplicateWord({
+    const newErrors = validateWordForm({
       words,
-      word: trimmedWord,
+      word,
+      translation,
       currentWordId: wordItem.id,
     });
-
-    const newErrors = {
-      word: "",
-      translation: "",
-    };
-
-    if (trimmedWord === "") {
-      newErrors.word = "Word is required";
-    } else if (isDuplicate) {
-      newErrors.word = "This word already exists";
-    }
-
-    if (trimmedTranslation === "") {
-      newErrors.translation = "Translation is required";
-    }
 
     if (newErrors.word || newErrors.translation) {
       setErrors(newErrors);
