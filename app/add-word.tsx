@@ -3,8 +3,7 @@ import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
 import { colors } from "@/src/constants/colors";
 import { useWords } from "@/src/context/WordsContext";
 import { CategorySelector } from "@/src/features/words/components/CategorySelector";
-import { defaultCategories } from "@/src/features/words/data/defaultCategories";
-import { hasDuplicateWord } from "@/src/features/words/utils/wordValidation";
+import { getAvailableCategories } from "@/src/features/words/utils/getAvailableCategories";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
@@ -19,14 +18,7 @@ export default function AddWordScreen() {
   const [isCategorySelectorVisible, setIsCategorySelectorVisible] =
     useState(false);
 
-  const categories = Array.from(
-    new Set([
-      ...defaultCategories,
-      ...words
-        .map((word) => word.category)
-        .filter((category): category is string => Boolean(category)),
-    ]),
-  ).sort((a, b) => a.localeCompare(b));
+  const categories = getAvailableCategories(words);
 
   const [errors, setErrors] = useState({
     word: "",
