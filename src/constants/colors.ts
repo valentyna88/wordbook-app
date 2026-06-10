@@ -1,3 +1,6 @@
+const primary = "#38BDF8";
+const danger = "#FF5151";
+
 export const colors = {
   background: "#F0F0F0",
 
@@ -13,7 +16,13 @@ export const colors = {
     known: "#A7F3D0",
   },
 
-  primary: "#38BDF8",
-  danger: "#FF5151",
+  feedback: {
+    success: "#54e177",
+    error: danger,
+    info: primary,
+  },
+
+  primary,
+  danger,
   border: "#E5E7EB",
 };

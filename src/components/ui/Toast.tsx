@@ -23,22 +23,22 @@ export function Toast({ message, type = "info" }: ToastProps) {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    bottom: 60,
-    left: 20,
-    right: 20,
-    backgroundColor: colors.primary,
+    bottom: 100,
+    left: 32,
+    right: 32,
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 12,
     alignItems: "center",
+    backgroundColor: colors.feedback.info,
   },
 
   success: {
-    backgroundColor: "#22C55E",
+    backgroundColor: colors.feedback.success,
   },
 
   error: {
-    backgroundColor: colors.danger,
+    backgroundColor: colors.feedback.error,
   },
 
   text: {
