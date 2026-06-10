@@ -29,7 +29,12 @@ export function WordCard({ item, onPress }: Props) {
 
         <View style={styles.rightActions}>
           <Pressable
-            onPress={handleSpeak}
+            onPress={(event) => {
+              event.stopPropagation();
+              handleSpeak();
+            }}
+            accessibilityRole="button"
+            accessibilityLabel={`Listen to ${item.word}`}
             style={({ pressed }) => [
               styles.speakButton,
               pressed && styles.speakButtonPressed,
@@ -104,7 +109,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: spacing.xs,
     borderRadius: 10,
-    backgroundColor: "#E8F7FF",
+    backgroundColor: colors.badge.categoryBackground,
   },
 
   categoryText: {

@@ -22,6 +22,10 @@ export const colors = {
     info: primary,
   },
 
+  badge: {
+    categoryBackground: "#E8F7FF",
+  },
+
   primary,
   danger,
   border: "#E5E7EB",
