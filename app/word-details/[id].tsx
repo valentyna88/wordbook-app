@@ -41,6 +41,13 @@ export default function WordDetailsScreen() {
     });
   };
 
+  const handleEditPress = () => {
+    router.push({
+      pathname: "/edit-word",
+      params: { id: wordItem.id },
+    });
+  };
+
   return (
     <ScreenContainer>
       <View style={styles.header}>
@@ -59,7 +66,7 @@ export default function WordDetailsScreen() {
             onPress={handleSpeakWord}
             style={({ pressed }) => [
               styles.speakButton,
-              pressed && { opacity: 0.6 },
+              pressed && styles.speakButtonPressed,
             ]}
           >
             <Feather name="volume-2" size={24} color={colors.primary} />
@@ -89,16 +96,8 @@ export default function WordDetailsScreen() {
       </View>
 
       <View style={styles.actions}>
-        <Pressable
-          style={styles.editButton}
-          onPress={() =>
-            router.push({
-              pathname: "/edit-word",
-              params: { id: wordItem.id },
-            })
-          }
-        >
-          <Feather name="edit" size={20} color="#FFFFFF" />
+        <Pressable style={styles.editButton} onPress={handleEditPress}>
+          <Feather name="edit" size={20} color={colors.card} />
           <Text style={styles.editButtonText}>Edit</Text>
         </Pressable>
 
@@ -106,7 +105,7 @@ export default function WordDetailsScreen() {
           style={styles.deleteButton}
           onPress={() => setIsDeleteModalVisible(true)}
         >
-          <Feather name="trash-2" size={20} color="#FF5151" />
+          <Feather name="trash-2" size={20} color={colors.danger} />
           <Text style={styles.deleteButtonText}>Delete</Text>
         </Pressable>
       </View>
@@ -139,7 +138,7 @@ const styles = StyleSheet.create({
   word: {
     fontSize: 32,
     fontWeight: "600",
-    color: "#111111",
+    color: colors.text.primary,
     textAlign: "center",
   },
 
@@ -158,6 +157,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
+  speakButtonPressed: {
+    opacity: 0.6,
+  },
+
   translation: {
     fontSize: 20,
     color: colors.text.secondary,
@@ -171,7 +174,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 5,
     borderRadius: 12,
-    backgroundColor: "#E8F7FF",
+    backgroundColor: colors.badge.categoryBackground,
   },
 
   categoryText: {
@@ -181,7 +184,7 @@ const styles = StyleSheet.create({
   },
 
   exampleCard: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.card,
     borderRadius: 12,
     padding: 12,
     marginBottom: 24,
@@ -193,7 +196,7 @@ const styles = StyleSheet.create({
 
   exampleLabel: {
     fontSize: 14,
-    color: "#9CA3AF",
+    color: colors.text.example,
     marginBottom: 4,
   },
 
@@ -244,7 +247,7 @@ const styles = StyleSheet.create({
   },
 
   editButtonText: {
-    color: "#FFFFFF",
+    color: colors.card,
     fontSize: 16,
     fontWeight: "600",
   },

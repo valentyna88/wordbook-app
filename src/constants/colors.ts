@@ -7,6 +7,7 @@ export const colors = {
   text: {
     primary: "#111111",
     secondary: "#6B7280",
+    example: "#9CA3AF",
   },
 
   card: "#FFFFFF",
