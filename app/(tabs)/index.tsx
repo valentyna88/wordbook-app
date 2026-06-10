@@ -8,15 +8,13 @@ import { colors } from "@/src/constants/colors";
 import { useWords } from "@/src/context/WordsContext";
 import { CategoryFilter } from "@/src/features/words/components/CategoryFilter";
 import { EmptyState } from "@/src/features/words/components/EmptyState";
-import {
-  SortFilter,
-  SortOption,
-} from "@/src/features/words/components/SortFilter";
+import { SortFilter } from "@/src/features/words/components/SortFilter";
 import {
   StatusFilter,
   StatusFilterValue,
 } from "@/src/features/words/components/StatusFilter";
 import { WordCard } from "@/src/features/words/components/WordCard";
+import { SortOption } from "@/src/features/words/types/sort.types";
 import { filterWords } from "@/src/features/words/utils/filterWords";
 import { getWordCategories } from "@/src/features/words/utils/getWordCategories";
 import { getWordsEmptyState } from "@/src/features/words/utils/getWordsEmptyState";
@@ -25,29 +23,30 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 
+type ToastType = "success" | "error" | "info";
+
+type ToastState = {
+  message: string;
+  type: ToastType;
+} | null;
+
 export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All categories");
-  const [isCategoryModalVisible, setIsCategoryModalVisible] = useState(false);
+  const [isCategorySheetVisible, setIsCategorySheetVisible] = useState(false);
+  const [isSortSheetVisible, setIsSortSheetVisible] = useState(false);
   const [statusFilter, setStatusFilter] = useState<StatusFilterValue>("all");
   const [selectedSort, setSelectedSort] = useState<SortOption>("newest");
-  const [isSortModalVisible, setIsSortModalVisible] = useState(false);
-  const [toast, setToast] = useState<{
-    message: string;
-    type: "success" | "error" | "info";
-  } | null>(null);
+  const [toast, setToast] = useState<ToastState>(null);
 
   const { words, isLoading } = useWords();
 
   const { toast: toastParam, type } = useLocalSearchParams<{
     toast?: string;
-    type?: "success" | "error" | "info";
+    type?: ToastType;
   }>();
 
-  const showToast = (
-    message: string,
-    type: "success" | "error" | "info" = "info",
-  ) => {
+  const showToast = (message: string, type: ToastType = "info") => {
     setToast({ message, type });
 
     setTimeout(() => {
@@ -84,6 +83,13 @@ export default function HomeScreen() {
 
   const handleAddWordPress = () => {
     router.push("/add-word");
+  };
+
+  const handleWordPress = (id: string) => {
+    router.push({
+      pathname: "/word-details/[id]",
+      params: { id },
+    });
   };
 
   if (isLoading) {
@@ -135,10 +141,10 @@ export default function HomeScreen() {
 
               <SortFilter
                 selectedSort={selectedSort}
-                visible={isSortModalVisible}
+                visible={isSortSheetVisible}
                 onChange={setSelectedSort}
-                onOpen={() => setIsSortModalVisible(true)}
-                onClose={() => setIsSortModalVisible(false)}
+                onOpen={() => setIsSortSheetVisible(true)}
+                onClose={() => setIsSortSheetVisible(false)}
               />
             </View>
 
@@ -146,24 +152,16 @@ export default function HomeScreen() {
               categories={categories}
               selectedCategory={selectedCategory}
               onChange={setSelectedCategory}
-              visible={isCategoryModalVisible}
-              onOpen={() => setIsCategoryModalVisible(true)}
-              onClose={() => setIsCategoryModalVisible(false)}
+              visible={isCategorySheetVisible}
+              onOpen={() => setIsCategorySheetVisible(true)}
+              onClose={() => setIsCategorySheetVisible(false)}
             />
 
             <StatusFilter value={statusFilter} onChange={setStatusFilter} />
           </View>
         }
         renderItem={({ item }) => (
-          <WordCard
-            item={item}
-            onPress={() =>
-              router.push({
-                pathname: "/word-details/[id]",
-                params: { id: item.id },
-              })
-            }
-          />
+          <WordCard item={item} onPress={() => handleWordPress(item.id)} />
         )}
         ListEmptyComponent={
           wordsEmptyState ? (
