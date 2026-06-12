@@ -1,0 +1,26 @@
+import { storageKeys } from "@/src/constants/storageKeys";
+import { Word } from "@/src/features/words/types/word.types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+export async function loadWordsFromStorage(): Promise<Word[]> {
+  try {
+    const storedWords = await AsyncStorage.getItem(storageKeys.words);
+
+    if (!storedWords) {
+      return [];
+    }
+
+    return JSON.parse(storedWords);
+  } catch (error) {
+    console.log("Error loading words:", error);
+    return [];
+  }
+}
+
+export async function saveWordsToStorage(words: Word[]) {
+  try {
+    await AsyncStorage.setItem(storageKeys.words, JSON.stringify(words));
+  } catch (error) {
+    console.log("Error saving words:", error);
+  }
+}

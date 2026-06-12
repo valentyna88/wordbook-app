@@ -1,7 +1,10 @@
-import { storageKeys } from "@/src/constants/storageKeys";
 import { NewWord, Word } from "@/src/features/words/types/word.types";
 import { createWord } from "@/src/features/words/utils/createWord";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import {
+  loadWordsFromStorage,
+  saveWordsToStorage,
+} from "@/src/features/words/storage/wordsStorage";
 import {
   createContext,
   ReactNode,
@@ -27,17 +30,10 @@ export function WordsProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const loadWords = async () => {
-      try {
-        const storedWords = await AsyncStorage.getItem(storageKeys.words);
+      const loadedWords = await loadWordsFromStorage();
 
-        if (storedWords) {
-          setWords(JSON.parse(storedWords));
-        }
-      } catch (error) {
-        console.log("Error loading words:", error);
-      } finally {
-        setIsLoading(false);
-      }
+      setWords(loadedWords);
+      setIsLoading(false);
     };
 
     loadWords();
@@ -48,15 +44,7 @@ export function WordsProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const saveWords = async () => {
-      try {
-        await AsyncStorage.setItem(storageKeys.words, JSON.stringify(words));
-      } catch (error) {
-        console.log("Error saving words:", error);
-      }
-    };
-
-    saveWords();
+    saveWordsToStorage(words);
   }, [words, isLoading]);
 
   const addWord = (newWord: NewWord) => {
