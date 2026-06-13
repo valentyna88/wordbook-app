@@ -1,6 +1,5 @@
 import { NewWord, Word } from "@/src/features/words/types/word.types";
 import { createWord } from "@/src/features/words/utils/createWord";
-
 import {
   loadWordsFromStorage,
   saveWordsToStorage,
@@ -8,8 +7,10 @@ import {
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -29,39 +30,51 @@ export function WordsProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     const loadWords = async () => {
       const loadedWords = await loadWordsFromStorage();
+
+      if (!isMounted) return;
 
       setWords(loadedWords);
       setIsLoading(false);
     };
 
     loadWords();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {
-    if (isLoading) {
-      return;
-    }
+    if (isLoading) return;
 
-    saveWordsToStorage(words);
+    const timeoutId = setTimeout(() => {
+      saveWordsToStorage(words);
+    }, 300);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [words, isLoading]);
 
-  const addWord = (newWord: NewWord) => {
+  const addWord = useCallback((newWord: NewWord) => {
     setWords((prev) => [createWord(newWord), ...prev]);
-  };
+  }, []);
 
-  const deleteWord = (id: string) => {
+  const deleteWord = useCallback((id: string) => {
     setWords((prev) => prev.filter((word) => word.id !== id));
-  };
+  }, []);
 
-  const updateWord = (updatedWord: Word) => {
+  const updateWord = useCallback((updatedWord: Word) => {
     setWords((prev) =>
       prev.map((word) => (word.id === updatedWord.id ? updatedWord : word)),
     );
-  };
+  }, []);
 
-  const toggleWordStatus = (id: string) => {
+  const toggleWordStatus = useCallback((id: string) => {
     setWords((prev) =>
       prev.map((word) =>
         word.id === id
@@ -72,19 +85,22 @@ export function WordsProvider({ children }: { children: ReactNode }) {
           : word,
       ),
     );
-  };
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({
+      words,
+      isLoading,
+      addWord,
+      deleteWord,
+      updateWord,
+      toggleWordStatus,
+    }),
+    [words, isLoading, addWord, deleteWord, updateWord, toggleWordStatus],
+  );
 
   return (
-    <WordsContext.Provider
-      value={{
-        words,
-        isLoading,
-        addWord,
-        deleteWord,
-        updateWord,
-        toggleWordStatus,
-      }}
-    >
+    <WordsContext.Provider value={contextValue}>
       {children}
     </WordsContext.Provider>
   );
@@ -96,6 +112,5 @@ export function useWords() {
   if (!context) {
     throw new Error("useWords must be used within WordsProvider");
   }
-
   return context;
 }
