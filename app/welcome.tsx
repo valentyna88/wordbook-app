@@ -1,7 +1,7 @@
-import { PrimaryButton } from "@/src/components/ui/PrimaryButton";
-import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
-import { colors } from "@/src/constants/colors";
-import { storageKeys } from "@/src/constants/storageKeys";
+import { PrimaryButton } from "@/components/ui/PrimaryButton";
+import { ScreenContainer } from "@/components/ui/ScreenContainer";
+import { colors } from "@/constants/colors";
+import { storageKeys } from "@/constants/storageKeys";
 import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";

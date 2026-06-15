@@ -1,5 +1,5 @@
-import { storageKeys } from "@/src/constants/storageKeys";
-import { WordsProvider } from "@/src/context/WordsContext";
+import { storageKeys } from "@/constants/storageKeys";
+import { WordsProvider } from "@/context/WordsContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router, Stack } from "expo-router";
 import { useEffect } from "react";

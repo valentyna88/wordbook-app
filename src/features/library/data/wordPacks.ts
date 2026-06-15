@@ -1,4 +1,4 @@
-import { Word } from "@/src/features/words/types/word.types";
+import { Word } from "@/features/words/types/word.types";
 
 export type WordPackItem = Word;
 

@@ -1,5 +1,5 @@
-import { colors } from "@/src/constants/colors";
-import { WordPack } from "@/src/features/library/data/wordPacks";
+import { colors } from "@/constants/colors";
+import { WordPack } from "@/features/library/data/wordPacks";
 import { Feather } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 

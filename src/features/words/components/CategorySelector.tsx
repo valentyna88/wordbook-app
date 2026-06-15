@@ -1,6 +1,6 @@
-import { BottomSheet } from "@/src/components/ui/BottomSheet";
-import { colors } from "@/src/constants/colors";
-import { spacing } from "@/src/constants/spacing";
+import { BottomSheet } from "@/components/ui/BottomSheet";
+import { colors } from "@/constants/colors";
+import { spacing } from "@/constants/spacing";
 import { Feather } from "@expo/vector-icons";
 import { useState } from "react";
 import {

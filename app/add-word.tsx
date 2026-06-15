@@ -1,10 +1,10 @@
-import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
-import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
-import { colors } from "@/src/constants/colors";
-import { useWords } from "@/src/context/WordsContext";
-import { CategorySelector } from "@/src/features/words/components/CategorySelector";
-import { getAvailableCategories } from "@/src/features/words/utils/getAvailableCategories";
-import { validateWordForm } from "@/src/features/words/utils/wordValidation";
+import { ScreenContainer } from "@/components/ui/ScreenContainer";
+import { ScreenTitle } from "@/components/ui/ScreenTitle";
+import { colors } from "@/constants/colors";
+import { useWords } from "@/context/WordsContext";
+import { CategorySelector } from "@/features/words/components/CategorySelector";
+import { getAvailableCategories } from "@/features/words/utils/getAvailableCategories";
+import { validateWordForm } from "@/features/words/utils/wordValidation";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";

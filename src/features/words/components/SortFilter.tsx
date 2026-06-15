@@ -1,7 +1,7 @@
-import { BottomSheet } from "@/src/components/ui/BottomSheet";
-import { colors } from "@/src/constants/colors";
-import { spacing } from "@/src/constants/spacing";
-import { typography } from "@/src/constants/typography";
+import { BottomSheet } from "@/components/ui/BottomSheet";
+import { colors } from "@/constants/colors";
+import { spacing } from "@/constants/spacing";
+import { typography } from "@/constants/typography";
 import { Feather } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SortOption, sortOptions } from "../types/sort.types";

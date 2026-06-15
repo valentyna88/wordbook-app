@@ -1,4 +1,4 @@
-import { StatusFilterValue } from "@/src/features/words/components/StatusFilter";
+import { StatusFilterValue } from "@/features/words/components/StatusFilter";
 
 type GetWordsEmptyStateParams = {
   hasWords: boolean;

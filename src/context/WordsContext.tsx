@@ -1,9 +1,9 @@
-import { NewWord, Word } from "@/src/features/words/types/word.types";
-import { createWord } from "@/src/features/words/utils/createWord";
 import {
   loadWordsFromStorage,
   saveWordsToStorage,
-} from "@/src/features/words/storage/wordsStorage";
+} from "@/features/words/storage/wordsStorage";
+import { NewWord, Word } from "@/features/words/types/word.types";
+import { createWord } from "@/features/words/utils/createWord";
 import {
   createContext,
   ReactNode,

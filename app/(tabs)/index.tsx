@@ -1,24 +1,24 @@
-import { FloatingAddButton } from "@/src/components/ui/FloatingAddButton";
-import { PrimaryButton } from "@/src/components/ui/PrimaryButton";
-import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
-import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
-import { SearchInput } from "@/src/components/ui/SearchInput";
-import { Toast } from "@/src/components/ui/Toast";
-import { colors } from "@/src/constants/colors";
-import { useWords } from "@/src/context/WordsContext";
-import { CategoryFilter } from "@/src/features/words/components/CategoryFilter";
-import { EmptyState } from "@/src/features/words/components/EmptyState";
-import { SortFilter } from "@/src/features/words/components/SortFilter";
+import { FloatingAddButton } from "@/components/ui/FloatingAddButton";
+import { PrimaryButton } from "@/components/ui/PrimaryButton";
+import { ScreenContainer } from "@/components/ui/ScreenContainer";
+import { ScreenTitle } from "@/components/ui/ScreenTitle";
+import { SearchInput } from "@/components/ui/SearchInput";
+import { Toast } from "@/components/ui/Toast";
+import { colors } from "@/constants/colors";
+import { useWords } from "@/context/WordsContext";
+import { CategoryFilter } from "@/features/words/components/CategoryFilter";
+import { EmptyState } from "@/features/words/components/EmptyState";
+import { SortFilter } from "@/features/words/components/SortFilter";
 import {
   StatusFilter,
   StatusFilterValue,
-} from "@/src/features/words/components/StatusFilter";
-import { WordCard } from "@/src/features/words/components/WordCard";
-import { SortOption } from "@/src/features/words/types/sort.types";
-import { filterWords } from "@/src/features/words/utils/filterWords";
-import { getWordCategories } from "@/src/features/words/utils/getWordCategories";
-import { getWordsEmptyState } from "@/src/features/words/utils/getWordsEmptyState";
-import { sortWords } from "@/src/features/words/utils/sortWords";
+} from "@/features/words/components/StatusFilter";
+import { WordCard } from "@/features/words/components/WordCard";
+import { SortOption } from "@/features/words/types/sort.types";
+import { filterWords } from "@/features/words/utils/filterWords";
+import { getWordCategories } from "@/features/words/utils/getWordCategories";
+import { getWordsEmptyState } from "@/features/words/utils/getWordsEmptyState";
+import { sortWords } from "@/features/words/utils/sortWords";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";

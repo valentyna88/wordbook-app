@@ -1,5 +1,5 @@
-import { defaultCategories } from "@/src/features/words/data/defaultCategories";
-import { Word } from "@/src/features/words/types/word.types";
+import { defaultCategories } from "@/features/words/data/defaultCategories";
+import { Word } from "@/features/words/types/word.types";
 
 export function getAvailableCategories(words: Word[]) {
   return Array.from(

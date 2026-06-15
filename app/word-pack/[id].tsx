@@ -1,8 +1,8 @@
-import { PrimaryButton } from "@/src/components/ui/PrimaryButton";
-import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
-import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
-import { colors } from "@/src/constants/colors";
-import { wordPacks } from "@/src/features/library/data/wordPacks";
+import { PrimaryButton } from "@/components/ui/PrimaryButton";
+import { ScreenContainer } from "@/components/ui/ScreenContainer";
+import { ScreenTitle } from "@/components/ui/ScreenTitle";
+import { colors } from "@/constants/colors";
+import { wordPacks } from "@/features/library/data/wordPacks";
 import { Feather } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import * as Speech from "expo-speech";

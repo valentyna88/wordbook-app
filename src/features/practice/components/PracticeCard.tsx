@@ -1,5 +1,5 @@
-import { colors } from "@/src/constants/colors";
-import { Word } from "@/src/features/words/types/word.types";
+import { colors } from "@/constants/colors";
+import { Word } from "@/features/words/types/word.types";
 import { Feather } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 

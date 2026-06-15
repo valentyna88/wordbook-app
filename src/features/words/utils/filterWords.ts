@@ -1,5 +1,5 @@
-import { Word } from "@/src/features/words/types/word.types";
-import { StatusFilterValue } from "@/src/features/words/components/StatusFilter";
+import { StatusFilterValue } from "@/features/words/components/StatusFilter";
+import { Word } from "@/features/words/types/word.types";
 
 type FilterWordsParams = {
   words: Word[];

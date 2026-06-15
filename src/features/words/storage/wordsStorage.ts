@@ -1,5 +1,5 @@
-import { storageKeys } from "@/src/constants/storageKeys";
-import { Word } from "@/src/features/words/types/word.types";
+import { storageKeys } from "@/constants/storageKeys";
+import { Word } from "@/features/words/types/word.types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export async function loadWordsFromStorage(): Promise<Word[]> {

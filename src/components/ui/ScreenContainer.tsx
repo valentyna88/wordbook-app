@@ -1,5 +1,5 @@
-import { colors } from "@/src/constants/colors";
-import { spacing } from "@/src/constants/spacing";
+import { colors } from "@/constants/colors";
+import { spacing } from "@/constants/spacing";
 import { ReactNode } from "react";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";

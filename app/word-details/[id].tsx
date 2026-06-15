@@ -1,9 +1,9 @@
-import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
-import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
-import { StatusBadge } from "@/src/components/ui/StatusBadge";
-import { colors } from "@/src/constants/colors";
-import { useWords } from "@/src/context/WordsContext";
-import { DeleteWordModal } from "@/src/features/words/components/DeleteWordModal";
+import { ScreenContainer } from "@/components/ui/ScreenContainer";
+import { ScreenTitle } from "@/components/ui/ScreenTitle";
+import { StatusBadge } from "@/components/ui/StatusBadge";
+import { colors } from "@/constants/colors";
+import { useWords } from "@/context/WordsContext";
+import { DeleteWordModal } from "@/features/words/components/DeleteWordModal";
 import { Feather } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import * as Speech from "expo-speech";

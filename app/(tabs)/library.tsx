@@ -1,7 +1,7 @@
-import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
-import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
-import { WordPackCard } from "@/src/features/library/components/WordPackCard";
-import { wordPacks } from "@/src/features/library/data/wordPacks";
+import { ScreenContainer } from "@/components/ui/ScreenContainer";
+import { ScreenTitle } from "@/components/ui/ScreenTitle";
+import { WordPackCard } from "@/features/library/components/WordPackCard";
+import { wordPacks } from "@/features/library/data/wordPacks";
 import { router } from "expo-router";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 

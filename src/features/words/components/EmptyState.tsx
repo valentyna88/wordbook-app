@@ -1,5 +1,5 @@
+import { colors } from "@/constants/colors";
 import { StyleSheet, Text, View } from "react-native";
-import { colors } from "@/src/constants/colors";
 
 type EmptyStateProps = {
   title: string;

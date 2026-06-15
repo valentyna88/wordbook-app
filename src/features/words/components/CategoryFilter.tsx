@@ -1,5 +1,5 @@
-import { BottomSheet } from "@/src/components/ui/BottomSheet";
-import { colors } from "@/src/constants/colors";
+import { BottomSheet } from "@/components/ui/BottomSheet";
+import { colors } from "@/constants/colors";
 import { Feather } from "@expo/vector-icons";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 

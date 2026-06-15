@@ -1,6 +1,6 @@
+import { colors } from "@/constants/colors";
+import { typography } from "@/constants/typography";
 import { StyleSheet, Text } from "react-native";
-import { colors } from "@/src/constants/colors";
-import { typography } from "@/src/constants/typography";
 
 type ScreenTitleProps = {
   title: string;

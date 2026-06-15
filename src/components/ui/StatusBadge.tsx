@@ -1,5 +1,5 @@
-import { colors } from "@/src/constants/colors";
-import { WordStatus } from "@/src/features/words/types/word.types";
+import { colors } from "@/constants/colors";
+import { WordStatus } from "@/features/words/types/word.types";
 import { StyleSheet, Text, View } from "react-native";
 
 type Props = {

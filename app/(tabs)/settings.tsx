@@ -1,8 +1,8 @@
-import { InfoModal } from "@/src/components/ui/InfoModal";
-import { ScreenContainer } from "@/src/components/ui/ScreenContainer";
-import { ScreenTitle } from "@/src/components/ui/ScreenTitle";
-import { colors } from "@/src/constants/colors";
-import { useWords } from "@/src/context/WordsContext";
+import { InfoModal } from "@/components/ui/InfoModal";
+import { ScreenContainer } from "@/components/ui/ScreenContainer";
+import { ScreenTitle } from "@/components/ui/ScreenTitle";
+import { colors } from "@/constants/colors";
+import { useWords } from "@/context/WordsContext";
 import { Feather } from "@expo/vector-icons";
 import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
