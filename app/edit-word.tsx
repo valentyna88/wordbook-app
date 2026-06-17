@@ -8,7 +8,17 @@ import { validateWordForm } from "@/features/words/utils/wordValidation";
 import { Feather } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 
 export default function EditWordScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -85,72 +95,92 @@ export default function EditWordScreen() {
     }
   };
 
+  const handleOpenCategorySelector = () => {
+    Keyboard.dismiss();
+    setIsCategorySelectorVisible(true);
+  };
+
   return (
     <ScreenContainer>
-      <View style={styles.header}>
-        <Pressable onPress={() => router.back()}>
-          <Feather name="chevron-left" size={32} color={colors.text.primary} />
-        </Pressable>
-        <ScreenTitle title="Edit word" />
-      </View>
-
-      <View style={styles.card}>
-        <Text style={styles.subtitle}>Update your word</Text>
-
-        <Text style={styles.label}>Word</Text>
-        <TextInput
-          style={styles.input}
-          value={word}
-          onChangeText={handleWordChange}
-          placeholder="Enter a word"
-          placeholderTextColor={colors.text.secondary}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-        {errors.word ? <Text style={styles.error}>{errors.word}</Text> : null}
-
-        <Text style={styles.label}>Translation</Text>
-        <TextInput
-          style={styles.input}
-          value={translation}
-          onChangeText={handleTranslationChange}
-          placeholder="Enter translation"
-          placeholderTextColor={colors.text.secondary}
-          autoCapitalize="none"
-        />
-        {errors.translation ? (
-          <Text style={styles.error}>{errors.translation}</Text>
-        ) : null}
-
-        <Text style={styles.label}>Category (optional)</Text>
-        <CategorySelector
-          value={category}
-          categories={categories}
-          visible={isCategorySelectorVisible}
-          onOpen={() => setIsCategorySelectorVisible(true)}
-          onClose={() => setIsCategorySelectorVisible(false)}
-          onChange={setCategory}
-        />
-
-        <Text style={styles.label}>Example sentence (optional)</Text>
-        <TextInput
-          style={styles.input}
-          value={example}
-          onChangeText={setExample}
-          placeholder="Enter example sentence"
-          placeholderTextColor={colors.text.secondary}
-        />
-
-        <Pressable
-          style={({ pressed }) => [
-            styles.saveButton,
-            pressed && styles.saveButtonPressed,
-          ]}
-          onPress={handleSave}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
         >
-          <Text style={styles.saveButtonText}>Save changes</Text>
-        </Pressable>
-      </View>
+          <View style={styles.header}>
+            <Pressable onPress={() => router.back()}>
+              <Feather
+                name="chevron-left"
+                size={32}
+                color={colors.text.primary}
+              />
+            </Pressable>
+            <ScreenTitle title="Edit word" />
+          </View>
+          <View style={styles.card}>
+            <Text style={styles.subtitle}>Update your word</Text>
+
+            <Text style={styles.label}>Word</Text>
+            <TextInput
+              style={styles.input}
+              value={word}
+              onChangeText={handleWordChange}
+              placeholder="Enter a word"
+              placeholderTextColor={colors.text.secondary}
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+            {errors.word ? (
+              <Text style={styles.error}>{errors.word}</Text>
+            ) : null}
+
+            <Text style={styles.label}>Translation</Text>
+            <TextInput
+              style={styles.input}
+              value={translation}
+              onChangeText={handleTranslationChange}
+              placeholder="Enter translation"
+              placeholderTextColor={colors.text.secondary}
+              autoCapitalize="none"
+            />
+            {errors.translation ? (
+              <Text style={styles.error}>{errors.translation}</Text>
+            ) : null}
+
+            <Text style={styles.label}>Category (optional)</Text>
+            <CategorySelector
+              value={category}
+              categories={categories}
+              visible={isCategorySelectorVisible}
+              onOpen={handleOpenCategorySelector}
+              onClose={() => setIsCategorySelectorVisible(false)}
+              onChange={setCategory}
+            />
+
+            <Text style={styles.label}>Example sentence (optional)</Text>
+            <TextInput
+              style={styles.input}
+              value={example}
+              onChangeText={setExample}
+              placeholder="Enter example sentence"
+              placeholderTextColor={colors.text.secondary}
+            />
+
+            <Pressable
+              style={({ pressed }) => [
+                styles.saveButton,
+                pressed && styles.saveButtonPressed,
+              ]}
+              onPress={handleSave}
+            >
+              <Text style={styles.saveButtonText}>Save changes</Text>
+            </Pressable>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </ScreenContainer>
   );
 }
