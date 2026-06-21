@@ -7,6 +7,7 @@ import { PracticeNavigation } from "@/features/practice/components/PracticeNavig
 import { PracticeResult } from "@/features/practice/components/PracticeResult";
 import { usePracticeSession } from "@/features/practice/hooks/usePracticeSession";
 import { CategoryFilter } from "@/features/words/components/CategoryFilter";
+import { getWordCategories } from "@/features/words/utils/getWordCategories";
 import { router, useFocusEffect } from "expo-router";
 import * as Speech from "expo-speech";
 import { useCallback, useState } from "react";
@@ -18,13 +19,7 @@ export default function PracticeScreen() {
   const [selectedCategory, setSelectedCategory] = useState("All categories");
   const [isCategoryModalVisible, setIsCategoryModalVisible] = useState(false);
 
-  const categories = Array.from(
-    new Set(
-      words
-        .map((word) => word.category)
-        .filter((category): category is string => Boolean(category)),
-    ),
-  );
+  const categories = getWordCategories(words);
 
   const {
     currentWord,
