@@ -2,6 +2,7 @@ export type WordStatus = "learning" | "known";
 
 export type Word = {
   id: string;
+  createdAt: number;
   word: string;
   translation: string;
   status: WordStatus;
