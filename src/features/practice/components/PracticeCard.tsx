@@ -29,6 +29,10 @@ export function PracticeCard({
           </Pressable>
         ) : null}
       </View>
+
+      {!isTranslationVisible && (
+        <Text style={styles.hint}>Tap to reveal translation</Text>
+      )}
     </Pressable>
   );
 }
@@ -62,5 +66,11 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
     marginBottom: 16,
     textAlign: "center",
+  },
+
+  hint: {
+    fontSize: 14,
+    color: colors.text.secondary,
+    marginTop: 8,
   },
 });
