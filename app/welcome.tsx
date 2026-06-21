@@ -52,7 +52,11 @@ export default function WelcomeScreen() {
           </View>
         </View>
 
-        <PrimaryButton title="Get started" onPress={handleGetStarted} />
+        <PrimaryButton
+          title="Get started"
+          onPress={handleGetStarted}
+          style={{ marginTop: 50 }}
+        />
       </View>
     </ScreenContainer>
   );

@@ -1,14 +1,15 @@
 import { colors } from "@/constants/colors";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet, Text, ViewStyle } from "react-native";
 
 type PrimaryButtonProps = {
   title: string;
   onPress: () => void;
+  style?: ViewStyle;
 };
 
-export function PrimaryButton({ title, onPress }: PrimaryButtonProps) {
+export function PrimaryButton({ title, onPress, style }: PrimaryButtonProps) {
   return (
-    <Pressable style={styles.button} onPress={onPress}>
+    <Pressable style={[styles.button, style]} onPress={onPress}>
       <Text style={styles.text}>{title}</Text>
     </Pressable>
   );
@@ -20,7 +21,6 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 20,
     alignItems: "center",
-    marginTop: 50,
   },
 
   text: {
