@@ -1,5 +1,6 @@
 import { ScreenContainer } from "@/components/ui/ScreenContainer";
 import { ScreenTitle } from "@/components/ui/ScreenTitle";
+import { colors } from "@/constants/colors";
 import { WordPackCard } from "@/features/library/components/WordPackCard";
 import { wordPacks } from "@/features/library/data/wordPacks";
 import { router } from "expo-router";
@@ -51,6 +52,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     textAlign: "center",
-    color: "#6B7280",
+    color: colors.text.secondary,
   },
 });

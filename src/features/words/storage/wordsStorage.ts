@@ -10,7 +10,9 @@ export async function loadWordsFromStorage(): Promise<Word[]> {
       return [];
     }
 
-    return JSON.parse(storedWords);
+    const parsed = JSON.parse(storedWords);
+    if (!Array.isArray(parsed)) return [];
+    return parsed;
   } catch (error) {
     console.log("Error loading words:", error);
     return [];
