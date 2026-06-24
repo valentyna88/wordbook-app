@@ -4,6 +4,7 @@ import { ScreenTitle } from "@/components/ui/ScreenTitle";
 import { colors } from "@/constants/colors";
 import { useWords } from "@/context/WordsContext";
 import { Feather } from "@expo/vector-icons";
+import Constants from "expo-constants";
 import * as WebBrowser from "expo-web-browser";
 import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -35,6 +36,8 @@ export default function SettingsScreen() {
   const handleTermsOfUsePress = async () => {
     await WebBrowser.openBrowserAsync(TERMS_OF_USE_URL);
   };
+
+  const appVersion = Constants.expoConfig?.version ?? "1.0.0";
 
   return (
     <ScreenContainer>
@@ -110,7 +113,7 @@ export default function SettingsScreen() {
         </View>
 
         <View style={styles.footer}>
-          <Text style={styles.version}>Version 1.0.0</Text>
+          <Text style={styles.version}>Version {appVersion}</Text>
         </View>
 
         <InfoModal
