@@ -4,6 +4,7 @@ import { ScreenTitle } from "@/components/ui/ScreenTitle";
 import { colors } from "@/constants/colors";
 import { useWords } from "@/context/WordsContext";
 import { Feather } from "@expo/vector-icons";
+import * as WebBrowser from "expo-web-browser";
 import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
@@ -11,6 +12,12 @@ type ModalContent = {
   title: string;
   content: string;
 };
+
+const PRIVACY_POLICY_URL =
+  "https://valentyna88.github.io/wordbook-legal/privacy-policy.html";
+
+const TERMS_OF_USE_URL =
+  "https://valentyna88.github.io/wordbook-legal/terms-of-use.html";
 
 export default function SettingsScreen() {
   const [modalContent, setModalContent] = useState<ModalContent | null>(null);
@@ -20,6 +27,14 @@ export default function SettingsScreen() {
   const totalWords = words.length;
   const learningWords = words.filter((word) => word.status === "learning");
   const knownWords = words.filter((word) => word.status === "known");
+
+  const handlePrivacyPolicyPress = async () => {
+    await WebBrowser.openBrowserAsync(PRIVACY_POLICY_URL);
+  };
+
+  const handleTermsOfUsePress = async () => {
+    await WebBrowser.openBrowserAsync(TERMS_OF_USE_URL);
+  };
 
   return (
     <ScreenContainer>
@@ -68,25 +83,13 @@ export default function SettingsScreen() {
           <SettingsItem
             icon="shield"
             title="Privacy Policy"
-            onPress={() =>
-              setModalContent({
-                title: "Privacy Policy",
-                content:
-                  "WordBook stores your words locally on your device. The app does not send your vocabulary data to any external server.",
-              })
-            }
+            onPress={handlePrivacyPolicyPress}
           />
 
           <SettingsItem
             icon="file-text"
             title="Terms of Use"
-            onPress={() =>
-              setModalContent({
-                title: "Terms of Use",
-                content:
-                  "WordBook is provided for personal learning purposes. You are responsible for the words and content you add to the app.",
-              })
-            }
+            onPress={handleTermsOfUsePress}
           />
         </View>
 
@@ -100,7 +103,7 @@ export default function SettingsScreen() {
               setModalContent({
                 title: "Contact us",
                 content:
-                  "For questions, feedback, or support, please contact the WordBook team at support@wordbook.app.",
+                  "For questions, feedback, or support, please contact the WordBook team at wordbook.dev@outlook.com.",
               })
             }
           />
