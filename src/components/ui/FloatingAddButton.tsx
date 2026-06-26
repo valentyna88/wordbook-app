@@ -16,19 +16,28 @@ export function FloatingAddButton({ onPress }: FloatingAddButtonProps) {
 const styles = StyleSheet.create({
   button: {
     position: "absolute",
-    bottom: 24,
+    bottom: 28,
     right: 20,
-    width: 54,
-    height: 54,
-    borderRadius: 28,
+    width: 58,
+    height: 58,
+    borderRadius: 29,
     backgroundColor: colors.primary,
     alignItems: "center",
     justifyContent: "center",
-    elevation: 4,
+    elevation: 8,
+    shadowColor: colors.primary,
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.28,
+    shadowRadius: 18,
   },
 
   icon: {
-    color: "#FFFAFA",
-    fontSize: 24,
+    color: colors.card,
+    fontSize: 30,
+    lineHeight: 32,
+    fontWeight: "500",
   },
 });

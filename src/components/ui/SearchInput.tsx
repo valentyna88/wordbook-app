@@ -15,13 +15,13 @@ export function SearchInput({
 }: SearchInputProps) {
   return (
     <View style={styles.container}>
-      <Feather name="search" size={20} color="#A0A0A0" />
+      <Feather name="search" size={20} color={colors.text.placeholder} />
       <TextInput
         style={styles.input}
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
-        placeholderTextColor="#A0A0A0"
+        placeholderTextColor={colors.text.placeholder}
         autoCapitalize="none"
         autoCorrect={false}
       />
@@ -33,19 +33,24 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#D5F3FF",
-    borderRadius: 10,
+    backgroundColor: colors.surface.input,
+    borderWidth: 1.5,
+    borderColor: colors.border,
+    borderRadius: 14,
     paddingHorizontal: 16,
-    height: 40,
-    shadowColor: colors.text.primary,
-    shadowOpacity: 0.08,
-    shadowRadius: 6,
-    elevation: 2,
+    height: 52,
+    shadowColor: "#142040",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 1,
   },
   input: {
     flex: 1,
     marginLeft: 10,
-    fontSize: 14,
-    color: "#111111",
+    fontSize: 15,
+    lineHeight: 20,
+    fontWeight: "500",
+    color: colors.text.primary,
   },
 });
