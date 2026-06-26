@@ -81,64 +81,66 @@ export function CategoryFilter({
 
 const styles = StyleSheet.create({
   trigger: {
-    marginTop: 12,
     marginBottom: 8,
     backgroundColor: colors.card,
+    borderWidth: 1.5,
+    borderColor: colors.border,
     borderRadius: 14,
-    paddingVertical: 10,
+    paddingVertical: 13,
     paddingHorizontal: 16,
+    minHeight: 52,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    elevation: 2,
+    shadowColor: "#142040",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 1,
   },
-
   triggerPressed: {
-    opacity: 0.75,
+    opacity: 0.8,
+    transform: [{ scale: 0.99 }],
   },
-
   triggerLeft: {
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
   },
-
   triggerText: {
-    fontSize: 16,
+    fontSize: 15,
+    lineHeight: 20,
     fontWeight: "600",
     color: colors.text.primary,
   },
-
   sheetTitle: {
     fontSize: 22,
+    lineHeight: 28,
     fontWeight: "700",
     color: colors.text.primary,
     marginBottom: 16,
   },
-
   optionsList: {
     maxHeight: 520,
   },
-
   option: {
     paddingVertical: 16,
-    paddingHorizontal: 12,
+    paddingHorizontal: 18,
     borderRadius: 14,
+    marginBottom: 4,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
-
   optionActive: {
-    backgroundColor: "#E8F7FF",
+    backgroundColor: colors.primaryTint,
   },
-
   optionText: {
     fontSize: 16,
+    lineHeight: 20,
     fontWeight: "500",
     color: colors.text.primary,
   },
-
   optionTextActive: {
     color: colors.primary,
     fontWeight: "700",

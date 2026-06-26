@@ -1,7 +1,5 @@
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { colors } from "@/constants/colors";
-import { spacing } from "@/constants/spacing";
-import { typography } from "@/constants/typography";
 import { Feather } from "@expo/vector-icons";
 import * as Speech from "expo-speech";
 import { Pressable, StyleSheet, Text, View } from "react-native";
@@ -61,18 +59,19 @@ export function WordCard({ item, onPress }: Props) {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.card,
-    borderRadius: 20,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.md,
-    shadowColor: colors.text.primary,
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.08,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 22,
+    padding: 18,
+    shadowColor: "#142040",
+    shadowOffset: { width: 0, height: 14 },
+    shadowOpacity: 0.12,
     shadowRadius: 20,
     elevation: 4,
-    gap: spacing.sm,
   },
   cardPressed: {
-    opacity: 0.92,
+    opacity: 0.96,
+    transform: [{ scale: 0.99 }],
   },
   topRow: {
     flexDirection: "row",
@@ -81,40 +80,48 @@ const styles = StyleSheet.create({
   },
   word: {
     flex: 1,
-    fontSize: 20,
-    fontWeight: "600",
+    fontSize: 21,
+    lineHeight: 28,
+    fontWeight: "700",
     color: colors.text.primary,
   },
   rightActions: {
     flexDirection: "row",
     alignItems: "center",
-    gap: spacing.sm,
+    gap: 10,
+    flexShrink: 0,
   },
   speakButton: {
-    padding: 6,
-    borderRadius: 18,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: colors.primarySoft,
+    alignItems: "center",
+    justifyContent: "center",
   },
   speakButtonPressed: {
-    opacity: 0.6,
+    opacity: 0.7,
+    transform: [{ scale: 0.97 }],
   },
   translation: {
-    fontSize: typography.subtitle.fontSize,
-    fontWeight: typography.subtitle.fontWeight,
-    lineHeight: typography.subtitle.lineHeight,
+    marginTop: 3,
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: "400",
     color: colors.text.secondary,
   },
   categoryBadge: {
     alignSelf: "flex-start",
-    marginTop: spacing.sm,
+    marginTop: 14,
     paddingHorizontal: 10,
-    paddingVertical: spacing.xs,
-    borderRadius: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
     backgroundColor: colors.badge.categoryBackground,
   },
-
   categoryText: {
     fontSize: 12,
-    fontWeight: "500",
-    color: colors.primary,
+    lineHeight: 12,
+    fontWeight: "600",
+    color: colors.badge.categoryText,
   },
 });

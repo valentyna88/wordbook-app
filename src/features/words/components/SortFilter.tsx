@@ -94,58 +94,61 @@ export function SortFilter({
 
 const styles = StyleSheet.create({
   trigger: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
+    width: 52,
+    height: 52,
+    borderRadius: 14,
     backgroundColor: colors.card,
+    borderWidth: 1.5,
+    borderColor: colors.border,
     alignItems: "center",
     justifyContent: "center",
-    elevation: 3,
+    shadowColor: "#142040",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 1,
   },
-
   triggerPressed: {
     opacity: 0.8,
+    transform: [{ scale: 0.97 }],
   },
-
   sortButton: {
     flexDirection: "row",
     alignItems: "center",
     gap: 2,
   },
-
   azIcon: {
-    fontSize: 12,
+    fontSize: 13,
+    lineHeight: 13,
     fontWeight: "700",
     color: colors.primary,
   },
-
   sheetTitle: {
     fontSize: 22,
+    lineHeight: 28,
     fontWeight: typography.title.fontWeight,
     color: colors.text.primary,
     marginBottom: spacing.md,
   },
-
   option: {
     minHeight: 56,
     borderRadius: 14,
-    paddingHorizontal: 12,
+    paddingHorizontal: 18,
     paddingVertical: 16,
+    marginBottom: 4,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
-
   optionActive: {
-    backgroundColor: "#E8F7FF",
+    backgroundColor: colors.primaryTint,
   },
-
   optionText: {
     fontSize: 16,
+    lineHeight: 20,
     fontWeight: "500",
     color: colors.text.primary,
   },
-
   optionTextActive: {
     color: colors.primary,
     fontWeight: "700",

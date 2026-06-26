@@ -47,20 +47,28 @@ const styles = StyleSheet.create({
   },
   filterButton: {
     flex: 1,
+    minHeight: 40,
     paddingVertical: 8,
-    borderRadius: 8,
+    borderRadius: 999,
     backgroundColor: colors.border,
     alignItems: "center",
+    justifyContent: "center",
   },
   filterButtonActive: {
     backgroundColor: colors.primary,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.28,
+    shadowRadius: 12,
+    elevation: 3,
   },
   filterText: {
     color: colors.text.primary,
     fontSize: 14,
-    fontWeight: "500",
+    lineHeight: 14,
+    fontWeight: "700",
   },
   filterTextActive: {
-    color: colors.card,
+    color: colors.onPrimary,
   },
 });

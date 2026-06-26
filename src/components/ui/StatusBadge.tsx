@@ -16,7 +16,14 @@ export function StatusBadge({ status }: Props) {
         isLearning ? styles.learningBadge : styles.knownBadge,
       ]}
     >
-      <Text style={styles.text}>{isLearning ? "Learning" : "Known"}</Text>
+      <Text
+        style={[
+          styles.text,
+          isLearning ? styles.learningText : styles.knownText,
+        ]}
+      >
+        {isLearning ? "Learning" : "Known"}
+      </Text>
     </View>
   );
 }
@@ -24,8 +31,7 @@ export function StatusBadge({ status }: Props) {
 const styles = StyleSheet.create({
   badge: {
     minWidth: 77,
-    height: "auto",
-    paddingHorizontal: 12,
+    paddingHorizontal: 13,
     paddingVertical: 6,
     borderRadius: 999,
     alignItems: "center",
@@ -38,8 +44,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.status.known,
   },
   text: {
-    fontSize: 12,
-    fontWeight: "400",
+    fontSize: 13,
+    lineHeight: 13,
+    fontWeight: "600",
     color: colors.text.primary,
+  },
+  learningText: {
+    color: colors.status.learningText,
+  },
+  knownText: {
+    color: colors.status.knownText,
   },
 });
