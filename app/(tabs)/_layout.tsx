@@ -17,8 +17,9 @@ export default function TabsLayout() {
           paddingBottom: Math.max(insets.bottom, 10),
         },
         tabBarLabelStyle: {
+          fontFamily: "PlusJakartaSans-SemiBold",
           fontSize: 12,
-          fontWeight: "600",
+          lineHeight: 16,
           marginTop: 2,
         },
       }}
