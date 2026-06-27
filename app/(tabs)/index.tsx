@@ -109,14 +109,19 @@ export default function HomeScreen() {
       <ScreenContainer>
         <ScreenTitle title="My Words" />
 
-        <EmptyState
-          title="No words yet"
-          subtitle="Add your first word to start building your vocabulary"
-        />
-        <PrimaryButton
-          title="+ Add your first word"
-          onPress={handleAddWordPress}
-        />
+        <View style={styles.emptyStateWrapper}>
+          <EmptyState
+            title="No words yet"
+            subtitle="Add your first word to start building your vocabulary"
+          />
+
+          <PrimaryButton
+            title="Add your first word"
+            icon="plus"
+            onPress={handleAddWordPress}
+            style={styles.emptyStateButton}
+          />
+        </View>
       </ScreenContainer>
     );
   }
@@ -201,5 +206,16 @@ const styles = StyleSheet.create({
 
   searchWrapper: {
     flex: 1,
+  },
+  emptyStateWrapper: {
+    flex: 1,
+    justifyContent: "center",
+    gap: 30,
+  },
+
+  emptyStateButton: {
+    alignSelf: "center",
+    minWidth: 240,
+    maxWidth: 320,
   },
 });

@@ -1,4 +1,6 @@
 import { colors } from "@/constants/colors";
+import { typography } from "@/constants/typography";
+import { Feather } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
 
 type EmptyStateProps = {
@@ -9,6 +11,10 @@ type EmptyStateProps = {
 export function EmptyState({ title, subtitle }: EmptyStateProps) {
   return (
     <View style={styles.container}>
+      <View style={styles.iconCircle}>
+        <Feather name="book-open" size={28} color={colors.primary} />
+      </View>
+
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.subtitle}>{subtitle}</Text>
     </View>
@@ -17,20 +23,30 @@ export function EmptyState({ title, subtitle }: EmptyStateProps) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 32,
+    width: "100%",
     alignItems: "center",
   },
 
+  iconCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.primaryTint,
+    marginBottom: 16,
+  },
+
   title: {
-    fontSize: 18,
-    fontWeight: "600",
+    ...typography.heading,
     color: colors.text.primary,
     marginBottom: 8,
     textAlign: "center",
   },
 
   subtitle: {
-    fontSize: 14,
+    ...typography.subtitle,
+    maxWidth: 270,
     color: colors.text.secondary,
     textAlign: "center",
   },

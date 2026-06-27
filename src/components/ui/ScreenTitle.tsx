@@ -7,12 +7,14 @@ type ScreenTitleProps = {
 };
 
 export function ScreenTitle({ title }: ScreenTitleProps) {
-  return <Text style={[typography.title, styles.title]}>{title}</Text>;
+  return <Text style={styles.title}>{title}</Text>;
 }
 
 const styles = StyleSheet.create({
   title: {
+    ...typography.largeTitle,
     color: colors.text.primary,
     textAlign: "center",
+    marginTop: 10,
   },
 });
